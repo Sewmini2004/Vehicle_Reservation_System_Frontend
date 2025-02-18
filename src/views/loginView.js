@@ -5,7 +5,7 @@ export function LoginForm() {
     return `
         <h2 class="text-center fw-bold">Log in</h2>
         <form id="loginForm">
-            ${InputField("email", "email", "Enter your email", "Email", "fas fa-envelope")}
+            ${InputField("username", "text", "Enter your username", "Username", "fas fa-user")}
             ${InputField("password", "password", "Enter your password", "Password", "fas fa-lock")}
 
             <div class="text-end">

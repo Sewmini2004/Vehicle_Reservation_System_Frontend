@@ -6,11 +6,11 @@ export function LoginController() {
 
     document.getElementById("loginForm").addEventListener("submit", (e) => {
         e.preventDefault();
-        const email = document.getElementById("email").value;
+        const username = document.getElementById("username").value;
         const password = document.getElementById("password").value;
 
         // Simulate authentication
-        if (email === "admin@example.com" && password === "admin123") {
+        if (username === "admin" && password === "1234") {
             alert("Login Successful!");
             window.location.href = "/dashboard";
         } else {
