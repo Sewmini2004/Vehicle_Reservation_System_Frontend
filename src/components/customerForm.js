@@ -32,7 +32,7 @@ export function CustomerForm() {
               <div class="row">
             <div class="col-md-6 mb-3">
                     <label class="form-label">Registration Date</label>
-                    <input type="date" class="form-control" id="registrationDate" required>
+                    <input type="date" class="form-control " id="registrationDate" required>
                 </div>
                 <div class="col-md-6 mb-3">
                     <label class="form-label">Email</label>
