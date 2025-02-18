@@ -1,0 +1,105 @@
+/* Full Page Background */
+/* Ensure the background image covers the entire screen */
+.login-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: url('/src/assets/images/vehicle.webp') no-repeat center center fixed;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Login Card with Glassmorphism Effect */
+/* Center the login card */
+.login-card {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    padding: 40px;
+    width: 490px; /* Increased for better visibility */
+    border: 2px solid rgba(255, 255, 255, 0.15);
+}
+
+
+/* Input Fields */
+input.form-control {
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: white;
+}
+
+input.form-control::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+input.form-control:focus {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* Buttons */
+.btn {
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    transform: scale(1.05);
+}
+
+/* Image Styling */
+.login-image {
+    height: 100vh;
+    object-fit: cover;
+    border-radius: 0 20px 20px 0;
+}
+
+/* Text Styling */
+.text-white-50 {
+    color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.text-white {
+    color: white !important;
+}
+
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden; /* Prevent scrolling issues */
+}
+
+/* Input group and icon styling */
+.input-group-text {
+    background: rgba(255, 255, 255, 0.2);
+    color: black; /* Change color of the icon to black */
+    border-radius: 5px;
+}
+
+/* Ensure input field has enough space for icon */
+.form-control {
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.3);
+    color: black;
+    border: none;
+}
+
+.form-control::placeholder {
+    color: rgba(0, 0, 0, 0.6);
+}
+
+/* Ensure icon is visible */
+.input-group-text i {
+    font-size: 1.2rem; /* Set icon size */
+}
+
+
+
+
