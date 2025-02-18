@@ -1,5 +1,4 @@
 import CustomerView from "../views/customerView.js";
-
 export function CustomerController() {
     const appDiv = document.getElementById("app");
     appDiv.innerHTML = CustomerView();  // Load customer view
@@ -26,7 +25,6 @@ export function CustomerController() {
             phoneNumber: document.getElementById("phoneNumber").value,
             registrationDate: document.getElementById("registrationDate").value,
             email: document.getElementById("email").value,
-
         };
 
         try {
@@ -56,15 +54,16 @@ export function CustomerController() {
                 alert(`Failed to save customer data: ${result.message}`);
             }
         } catch (error) {
-
-            // console.error("Error saving customer:", error);
-            // alert("An error occurred while saving data.");
+            console.error("Error saving customer:", error);
+            alert("An error occurred while saving data.");
         }
     });
+
 }
 
+
 // Load customers dynamically
-async function loadCustomers() {
+window.loadCustomers = async function loadCustomers() {
     console.log("Loading customer data...");
     try {
         const response = await fetch("http://localhost:8088/Vehicle_Reservation_System_Backend_war/customer");
@@ -84,6 +83,13 @@ async function loadCustomers() {
         tableBody.innerHTML = "";  // Clear previous data
 
         customers.forEach(customer => {
+            let editBtn = '';
+            let deleteBtn = '';
+
+
+                editBtn = `<a href="javascript:void(0)" id="edit" class="btn btn-warning btn-sm edit-btn" title="Edit" onclick="editCustomer(${customer.customerId})" data-bs-toggle="modal"><i class="fa fa-edit"></i></a>`;
+                deleteBtn = `<a href="javascript:void(0)" id="delete" class="btn btn-danger btn-sm delete-btn" onclick="deleteCustomer(${customer.customerId})" title="delete"><i class="fa fa-trash"></i></a>`;
+
             const row = document.createElement("tr");
             row.innerHTML = `
                 <td>${customer.name}</td>
@@ -92,13 +98,11 @@ async function loadCustomers() {
                 <td>${customer.phoneNumber}</td>
                 <td>${customer.registrationDate}</td>
                 <td>${customer.email}</td>
-                <td>
-                    <button class="btn btn-warning btn-sm edit-btn" onclick="editCustomer(${customer.customerId})">
-                        <i class="fas fa-edit"></i> Edit
-                    </button>
-                    <button class="btn btn-danger btn-sm delete-btn" onclick="deleteCustomer(${customer.customerId})">
-                        <i class="fas fa-trash"></i> Delete
-                    </button>
+                <td class="table-border-right">
+                    <center>
+                        ${editBtn}
+                        ${deleteBtn}
+                    </center>
                 </td>
             `;
             tableBody.appendChild(row);
@@ -111,8 +115,37 @@ async function loadCustomers() {
 }
 
 
+
+// Edit customer
+window.editCustomer = async function editCustomer(id) {
+    console.log("Editing customer with ID:", id);
+    try {
+        const response = await fetch(`http://localhost:8088/Vehicle_Reservation_System_Backend_war/customer`);
+        const customer = await response.json();
+
+        // Populate the form with the customer data
+        document.getElementById("customerId").value = customer.customerId;
+        document.getElementById("name").value = customer.name;
+        document.getElementById("address").value = customer.address;
+        document.getElementById("nic").value = customer.nic;
+        document.getElementById("phoneNumber").value = customer.phoneNumber;
+        document.getElementById("registrationDate").value = customer.registrationDate;
+        document.getElementById("email").value = customer.email;
+
+        // Update modal label to "Edit Customer"
+        document.getElementById("customerModalLabel").innerText = "Edit Customer";
+
+        // Show the modal
+        new bootstrap.Modal(document.getElementById("customerModal")).show();
+    } catch (error) {
+        console.error("Error fetching customer data for edit:", error);
+        alert("Failed to load customer data for editing.");
+    }
+}
+
+
 // Delete customer
-async function deleteCustomer(id) {
+ window.deleteCustomer = async function deleteCustomer(id) {
     const confirmDelete = confirm("Are you sure you want to delete this customer?");
     if (confirmDelete) {
         try {
@@ -125,34 +158,10 @@ async function deleteCustomer(id) {
                 alert(`Failed to delete customer: ${result.message}`);
             }
         } catch (error) {
-            // console.error("Error deleting customer:", error);
-            // alert("An error occurred while deleting data.");
+            console.error("Error deleting customer:", error);
+            alert("An error occurred while deleting data.");
         }
     }
 }
 
-// Edit customer
-function editCustomer(id) {
-    fetch(`http://localhost:8088/Vehicle_Reservation_System_Backend_war/customer/${id}`)
-        .then(response => response.json())
-        .then(customer => {
-            // Populate the form with the customer data
-            document.getElementById("customerId").value = customer.id;
-            document.getElementById("name").value = customer.name;
-            document.getElementById("address").value = customer.address;
-            document.getElementById("nic").value = customer.nic;
-            document.getElementById("phoneNumber").value = customer.phoneNumber;
-            document.getElementById("registrationDate").value = customer.registrationDate;
-            document.getElementById("email").value = customer.email;
 
-            // Update modal label to "Edit Customer"
-            document.getElementById("customerModalLabel").innerText = "Edit Customer";
-
-            // Show the modal
-            new bootstrap.Modal(document.getElementById("customerModal")).show();
-        })
-        .catch(error => {
-            // console.error("Error fetching customer data for edit:", error);
-            // alert("Failed to load customer data for editing.");
-        });
-}
