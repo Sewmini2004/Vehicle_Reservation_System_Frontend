@@ -1,8 +1,10 @@
 import { LoginController } from "./controllers/loginController.js";
+import { CustomerController } from "./controllers/customerController.js";  // Import the customer controller
 
 const routes = {
     "/": LoginController,
     "/login": LoginController,
+    "/customers": CustomerController,  // Add route for customers
 };
 
 export function navigateTo(url) {
