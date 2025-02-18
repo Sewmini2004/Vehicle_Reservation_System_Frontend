@@ -4,7 +4,7 @@ import { CustomerController } from "./controllers/customerController.js";
 const routes = {
     "/": LoginController,
     "/login": LoginController,
-    "/customers": CustomerController,
+    "/customer": CustomerController,
 };
 
 export function navigateTo(url) {
