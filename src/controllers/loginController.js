@@ -11,8 +11,8 @@ export function LoginController() {
 
         // Simulate authentication
         if (username === "admin" && password === "1234") {
-            alert("Login Successful!");
-            window.location.href = "/dashboard";
+
+            window.location.href = "/customer";
         } else {
             alert("Invalid Email or Password!");
         }
