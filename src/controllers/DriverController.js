@@ -55,8 +55,10 @@ export function DriverController() {
                 alert(`Failed to save driver data: ${result.message}`);
             }
         } catch (error) {
-            console.error("Error saving driver:", error);
             alert("An error occurred while saving data.");
+            setTimeout(() => {
+                loadDrivers();  // Calling loadDrivers again to reload the table data.
+            }, 1000);
         }
     });
 }
@@ -77,7 +79,6 @@ window.loadDrivers = async function loadDrivers() {
 
         console.log("Drivers fetched successfully:");
         console.log(drivers);
-
         const tableBody = document.getElementById("driverTableBody");
         tableBody.innerHTML = "";  // Clear previous data
 
@@ -110,6 +111,8 @@ window.loadDrivers = async function loadDrivers() {
     } catch (error) {
         console.error("Error loading drivers:", error);
         alert("An error occurred while loading driver data.");
+
+
     }
 }
 
@@ -162,6 +165,11 @@ window.deleteDriver = async function deleteDriver(id) {
         } catch (error) {
             console.error("Error deleting driver:", error);
             alert("An error occurred while deleting data.");
+            setTimeout(() => {
+                loadDrivers();  // Calling loadDrivers again to reload the table data.
+            }, 1000);
         }
     }
 }
+
+
