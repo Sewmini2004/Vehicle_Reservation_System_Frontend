@@ -1,6 +1,7 @@
 import { LoginController } from "./controllers/loginController.js";
 import { CustomerController } from "./controllers/customerController.js";
 import {DriverController} from "./controllers/DriverController";
+import {VehicleController} from "./controllers/VehicleController";
 
 const routes = {
     "/": LoginController,
