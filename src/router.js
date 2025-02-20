@@ -7,6 +7,7 @@ const routes = {
     "/login": LoginController,
     "/customer": CustomerController,
     "/driver": DriverController,
+    "/vehicle": VehicleController
 };
 
 export function navigateTo(url) {
