@@ -17,7 +17,7 @@ export function CustomerController() {
     document.getElementById("saveCustomerBtn").addEventListener("click", async () => {
         const customerId = document.getElementById("customerId").value;
         const customer = {
-            customerId:5,
+            customerId:customerId,
             userId:1,
             name: document.getElementById("name").value,
             address: document.getElementById("address").value,
@@ -31,7 +31,7 @@ export function CustomerController() {
             let response;
             if (customerId) {
                 // Update existing customer
-                response = await fetch(`http://localhost:8088/Vehicle_Reservation_System_Backend_war/customer/${customerId}`, {
+                response = await fetch(`http://localhost:8088/Vehicle_Reservation_System_Backend_war/customer?customerId=${customerId}`, {
                     method: "PUT",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(customer),
@@ -117,13 +117,29 @@ window.loadCustomers = async function loadCustomers() {
 
 
 // Edit customer
+
 window.editCustomer = async function editCustomer(id) {
     console.log("Editing customer with ID:", id);
     try {
+        // Fetch the list of all customers
         const response = await fetch(`http://localhost:8088/Vehicle_Reservation_System_Backend_war/customer`);
-        const customer = await response.json();
 
-        // Populate the form with the customer data
+        // Parse the JSON response
+        const customers = await response.json();
+        console.log("Fetched customer data: ");
+        console.log(customers);
+
+        // Find the customer by matching the customerId
+        const customer = customers.find(customer => customer.customerId === id);
+
+        if (!customer) {
+            // If no customer is found with the given id
+            console.error("Customer not found");
+            alert("Customer not found!");
+            return;
+        }
+
+        // Now populate the form with the found customer data
         document.getElementById("customerId").value = customer.customerId;
         document.getElementById("name").value = customer.name;
         document.getElementById("address").value = customer.address;
@@ -144,12 +160,13 @@ window.editCustomer = async function editCustomer(id) {
 }
 
 
+
 // Delete customer
  window.deleteCustomer = async function deleteCustomer(id) {
     const confirmDelete = confirm("Are you sure you want to delete this customer?");
     if (confirmDelete) {
         try {
-            const response = await fetch(`http://localhost:8088/Vehicle_Reservation_System_Backend_war/customer/${id}`, { method: "DELETE" });
+            const response = await fetch(`http://localhost:8088/Vehicle_Reservation_System_Backend_war/customer?customerId=${id}`, { method: "DELETE" });
             const result = await response.json();
             if (response.ok) {
                 alert("Customer deleted successfully!");
