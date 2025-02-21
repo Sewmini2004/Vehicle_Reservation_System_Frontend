@@ -2,6 +2,7 @@ export function BookingForm() {
     return `
         <form id="bookingForm">
             <div class="row">
+             <input type="hidden" id="bookingId">
                 <div class="col-md-6 mb-3">
                     <label class="form-label">Customer</label>
                     <select class="form-control" id="customerDropdown">
@@ -19,7 +20,9 @@ export function BookingForm() {
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <label class="form-label">Driver</label>
-                    <select class="form-control" id="driverDropdown"></select>
+                    <select class="form-control" id="driverDropdown">
+                      <option value=""></option>
+                </select>
                 </div>
                 <div class="col-md-6 mb-3">
                     <label class="form-label">Car Type</label>
@@ -29,17 +32,20 @@ export function BookingForm() {
                     </select>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <label class="form-label">Pickup Location</label>
-                    <input type="text" class="form-control" id="pickupLocation" readonly>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label class="form-label">Drop Location</label>
-                    <input type="text" class="form-control" id="dropLocation" readonly>
-                </div>
-                <div id="map" style="height: 300px;"></div>
-            </div>   
+          <div class="row">
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Pickup Location</label>
+                <input type="text" class="form-control" id="pickupLocation" readonly>
+                <input type="hidden" id="pickupCoordinates">
+            </div>
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Drop Location</label>
+                <input type="text" class="form-control" id="dropLocation" readonly>
+                <input type="hidden" id="dropCoordinates">
+            </div>
+        </div>
+        <div id="map" style="height: 300px;"></div>
+
             
             <div class="row">
                 <div class="col-md-6 mb-3">

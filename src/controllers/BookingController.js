@@ -1,13 +1,18 @@
 import BookingView from "../views/BookingView";
-
-import BookingView from "../views/BookingView";
-import { initMap } from "../controllers/MapController";
+import {initMap} from "./MapController";
 
 export function BookingController() {
     const appDiv = document.getElementById("app");
     appDiv.innerHTML = BookingView(); // Load booking view
 
     initMap(); // Initialize map for pickup and drop locations
+    // Open modal for adding a new booking
+    document.getElementById("addBookingBtn").addEventListener("click", () => {
+        document.getElementById("bookingModalLabel").innerText = "Add Booking";
+        document.getElementById("bookingForm").reset();
+        document.getElementById("bookingId").value = "";
+        new bootstrap.Modal(document.getElementById("bookingModal")).show();
+    });
 
     document.getElementById("saveBookingBtn").addEventListener("click", async () => {
         const booking = {
