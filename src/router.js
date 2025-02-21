@@ -3,6 +3,7 @@ import { LoginController } from "./controllers/loginController.js";
 import { CustomerController } from "./controllers/customerController.js";
 import { DriverController } from "./controllers/DriverController.js";
 import { VehicleController } from "./controllers/VehicleController.js";
+import {BookingController} from "./controllers/BookingController";
 
 const routes = {
     "/": LoginController,
@@ -10,6 +11,7 @@ const routes = {
     "/customer": CustomerController,
     "/driver": DriverController,
     "/vehicle": VehicleController,
+    "/booking": BookingController
 };
 
 // Function to handle navigation
