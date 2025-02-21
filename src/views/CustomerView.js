@@ -1,7 +1,7 @@
 import { CustomerForm } from "../components/customerForm.js";
 export default function CustomerView() {
     return `
-     <div class="container-fluid" style="padding: 4.26rem;" >
+     <div class="container-fluid" style="padding: 2.26rem;" >
         <div class="col-md" >
             <div class="accordion" id="accordionExample">
                 <div class="card">
@@ -11,7 +11,7 @@ export default function CustomerView() {
 
                     <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
                         <div class="card-body">
-                            <div style="padding-left: 1.26rem" class="form-row">
+                            <div style=" width: 100%" class="form-row">
                                 <div class="col-md" id="table_row">
                                     <div><br>
                                         <table id="customer_table" class="table table-bordered table-hover display table-responsive-md">
