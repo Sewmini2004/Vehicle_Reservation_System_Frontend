@@ -86,6 +86,56 @@ html, body {
     font-size: 1.2rem; /* Set icon size */
 }
 
+/* Ensure the sidebar takes full height and has no extra margins */
+body, html {
+    height: 100%;
+    margin: 0;
+}
+
+.wrapper {
+    display: flex;
+}
+
+.sidebar {
+    width: 250px;
+    background-color: #333;
+    color: white;
+    position: fixed;
+    height: 100%; /* Full height */
+    top: 0;
+    left: 0;
+    padding-top: 20px; /* Optional padding for the top */
+    box-sizing: border-box; /* Ensures padding doesn't affect the width */
+}
+
+/* Remove extra space from list items */
+.sidebar .nav-item {
+    margin: 10px; /* Remove margin from each list item */
+    padding: 0; /* Remove padding from each list item */
+}
+
+.sidebar .nav-link {
+    color: white;
+    padding: 15px 15px; /* Optional: Adjust padding to make the link height uniform */
+}
+
+.sidebar .nav-link:hover {
+    background-color: rgba(85, 85, 85, 0.63);
+}
+
+.active-link {
+    background-color: #007bff !important; /* Active link color */
+    color: white !important;
+}
+
+/* Adjust main content to handle sidebar properly */
+.main-panel {
+    margin-left: 250px;
+    padding: 20px;
+    min-height: 100vh; /* Ensure main content takes up full screen height */
+}
+
+
 
 
 

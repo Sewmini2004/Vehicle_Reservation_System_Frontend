@@ -2,7 +2,7 @@ import { VehicleForm } from "../components/VehicleForm.js";
 
 export default function VehicleView() {
     return `
-    <div class="container-fluid" style="padding: 4.26rem;">
+    <div class="container-fluid" style="padding: 2.26rem;">
         <div class="col-md">
             <div class="accordion" id="accordionExample">
                 <div class="card">
@@ -12,7 +12,7 @@ export default function VehicleView() {
 
                     <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
                         <div class="card-body">
-                            <div style="padding-left: 1.26rem" class="form-row">
+                            <div style="width: 100%" class="form-row">
                                 <div class="col-md" id="table_row">
                                     <div><br>
                                         <table id="vehicle_table" class="table table-bordered table-hover display table-responsive-md">

@@ -1,13 +1,21 @@
+// main.js
 import './style.css'
-import javascriptLogo from './javascript.svg'
-import viteLogo from '/vite.svg'
-import { setupCounter } from './counter.js'
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
-import "./router.js";
+import { navigateTo, renderRoute } from './router.js';
 
+// Initial HTML structure for the app (optional)
 document.querySelector('#app').innerHTML = `
-  
-`
+  <h1>Vehicle Reservation System</h1>
+  <nav>
+    <ul>
+      <li><a href="/customer" data-link>Customer Management</a></li>
+      <li><a href="/driver" data-link>Driver Management</a></li>
+      <li><a href="/vehicle" data-link>Vehicle Management</a></li>
+      <li><a href="/login" data-link>Login</a></li>
+    </ul>
+  </nav>
+`;
 
-setupCounter(document.querySelector('#counter'))
+// Initialize the router with the current route
+renderRoute(location.pathname);
