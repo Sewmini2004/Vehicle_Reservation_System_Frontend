@@ -1,11 +1,22 @@
 import BookingView from "../views/BookingView";
-import {initMap} from "./MapController";
+import { initMap } from "./MapController";
 
 export function BookingController() {
+
     const appDiv = document.getElementById("app");
     appDiv.innerHTML = BookingView(); // Load booking view
 
+    document.getElementById("go-payment").addEventListener("click", function () {
+        window.location.href = "/payment";
+    });
+
     initMap(); // Initialize map for pickup and drop locations
+    loadVehicles(); // Load vehicle dropdown data when page loads
+    loadCustomers(); // Load customer dropdown
+    loadDrivers();   // Load driver dropdown
+
+
+
     // Open modal for adding a new booking
     document.getElementById("addBookingBtn").addEventListener("click", () => {
         document.getElementById("bookingModalLabel").innerText = "Add Booking";
@@ -16,9 +27,9 @@ export function BookingController() {
 
     document.getElementById("saveBookingBtn").addEventListener("click", async () => {
         const booking = {
-            customerId: document.getElementById("customerId").value,
-            driverId: document.getElementById("driverId").value,
-            vehicleId: document.getElementById("vehicleId").value,
+            customerId: document.getElementById("customerDropdown").value,
+            driverId: document.getElementById("driverDropdown").value,
+            vehicleId: document.getElementById("vehicleDropdown").value,
             pickupLocation: document.getElementById("pickupLocation").value,
             dropoffLocation: document.getElementById("dropLocation").value,
             bookingDate: document.getElementById("bookingDate").value,
@@ -35,6 +46,7 @@ export function BookingController() {
             const result = await response.json();
             if (response.ok) {
                 alert("Booking saved successfully!");
+                loadBookings(); // Reload the booking list
             } else {
                 alert(`Failed to save booking: ${result.message}`);
             }
@@ -43,6 +55,85 @@ export function BookingController() {
         }
     });
 }
+
+// Function to load vehicles into the dropdown
+async function loadVehicles() {
+    try {
+        const response = await fetch("http://localhost:8088/Vehicle_Reservation_System_Backend_war/vehicle"); // Update endpoint if needed
+        if (!response.ok) throw new Error("Failed to fetch vehicles");
+
+        const vehicles = await response.json();
+        const vehicleDropdown = document.getElementById("vehicleDropdown");
+        vehicleDropdown.innerHTML = '<option value="">Select a Vehicle</option>'; // Default option
+
+        vehicles.forEach(vehicle => {
+            const option = document.createElement("option");
+            option.value = vehicle.vehicleId; // Ensure this matches API response
+            option.textContent = `${vehicle.registrationNumber} - ${vehicle.model}`; // Customize display
+            option.dataset.carType = vehicle.carType; // Store car type in data attribute
+            vehicleDropdown.appendChild(option);
+        });
+
+    } catch (error) {
+        console.error("Error loading vehicles:", error);
+    }
+}
+
+// Function to load customers into the dropdown
+async function loadCustomers() {
+    try {
+        const response = await fetch("http://localhost:8088/Vehicle_Reservation_System_Backend_war/customer"); // Update the API URL if needed
+        if (!response.ok) throw new Error("Failed to fetch customers");
+
+        const customers = await response.json();
+        const customerDropdown = document.getElementById("customerDropdown");
+        customerDropdown.innerHTML = '<option value="">Select a Customer</option>'; // Default option
+
+        customers.forEach(customer => {
+            const option = document.createElement("option");
+            option.value = customer.customerId; // Ensure this matches your API response
+            option.textContent = `${customer.name} `; // Customize the display
+            customerDropdown.appendChild(option);
+        });
+
+    } catch (error) {
+        console.error("Error loading customers:", error);
+    }
+}
+
+// Function to load drivers into the dropdown
+async function loadDrivers() {
+    try {
+        const response = await fetch("http://localhost:8088/Vehicle_Reservation_System_Backend_war/driver"); // Update API URL if needed
+        if (!response.ok) throw new Error("Failed to fetch drivers");
+
+        const drivers = await response.json();
+        const driverDropdown = document.getElementById("driverDropdown");
+        driverDropdown.innerHTML = '<option value="">Select a Driver</option>'; // Default option
+
+        drivers.forEach(driver => {
+            const option = document.createElement("option");
+            option.value = driver.driverId; // Ensure this matches your API response
+            option.textContent = `${driver.name} - ${driver.status}`; // Customize display
+            driverDropdown.appendChild(option);
+        });
+
+    } catch (error) {
+        console.error("Error loading drivers:", error);
+    }
+}
+
+document.getElementById("vehicleDropdown").addEventListener("change", function () {
+    const selectedVehicle = this.options[this.selectedIndex]; // Get selected option
+    const carTypeDropdown = document.getElementById("carTypeDropdown");
+
+    if (selectedVehicle.value) {
+        carTypeDropdown.innerHTML = `<option value="${selectedVehicle.dataset.carType}">${selectedVehicle.dataset.carType}</option>`;
+    } else {
+        carTypeDropdown.innerHTML = `<option value="">Select a Car Type</option>`; // Reset if no vehicle is selected
+    }
+});
+
 
 // Load bookings dynamically
 window.loadBookings = async function loadBookings() {
@@ -82,11 +173,11 @@ window.editBooking = async function editBooking(id) {
         const response = await fetch(`http://localhost:8088/booking?bookingId=${id}`);
         const booking = await response.json();
         document.getElementById("bookingId").value = booking.bookingId;
-        document.getElementById("customerId").value = booking.customerId;
-        document.getElementById("driverId").value = booking.driverId;
-        document.getElementById("vehicleId").value = booking.vehicleId;
+        document.getElementById("customerDropdown").value = booking.customerId;
+        document.getElementById("driverDropdown").value = booking.driverId;
+        document.getElementById("vehicleDropdown").value = booking.vehicleId;
         document.getElementById("pickupLocation").value = booking.pickupLocation;
-        document.getElementById("dropoffLocation").value = booking.dropoffLocation;
+        document.getElementById("dropLocation").value = booking.dropoffLocation;
         document.getElementById("bookingDate").value = booking.bookingDate;
         document.getElementById("totalBill").value = booking.totalBill;
         new bootstrap.Modal(document.getElementById("bookingModal")).show();

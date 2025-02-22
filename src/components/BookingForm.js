@@ -11,7 +11,7 @@ export function BookingForm() {
                 </div>
                 <div class="col-md-6 mb-3">
                     <label class="form-label">Vehicle</label>
-                    <select class="form-control" id="vehicleDropdown">
+                    <select class="form-control " id="vehicleDropdown" >
                      <option value=""></option>
               </select>
                   
