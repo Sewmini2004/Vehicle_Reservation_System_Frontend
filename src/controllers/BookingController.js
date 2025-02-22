@@ -15,6 +15,24 @@ export function BookingController() {
     loadCustomers(); // Load customer dropdown
     loadDrivers();   // Load driver dropdown
 
+    setTimeout(() => {
+        const vehicleDropdown = document.getElementById("vehicleDropdown");
+        const carTypeDropdown = document.getElementById("carTypeDropdown");
+
+        if (vehicleDropdown && carTypeDropdown) {
+            vehicleDropdown.addEventListener("change", function () {
+                const selectedVehicle = this.options[this.selectedIndex];
+
+                if (selectedVehicle.value) {
+                    carTypeDropdown.innerHTML = `<option value="${selectedVehicle.dataset.carType}">${selectedVehicle.dataset.carType}</option>`;
+                } else {
+                    carTypeDropdown.innerHTML = `<option value="">Select a Car Type</option>`;
+                }
+            });
+        } else {
+            console.error("Vehicle or Car Type dropdown not found in the DOM.");
+        }
+    }, 100); // Delay to ensure DOM is rendered
 
 
     // Open modal for adding a new booking
@@ -123,16 +141,19 @@ async function loadDrivers() {
     }
 }
 
-document.getElementById("vehicleDropdown").addEventListener("change", function () {
-    const selectedVehicle = this.options[this.selectedIndex]; // Get selected option
-    const carTypeDropdown = document.getElementById("carTypeDropdown");
+window.onload = function () {
+    document.getElementById("vehicleDropdown").addEventListener("change", function () {
+        const selectedVehicle = this.options[this.selectedIndex]; // Get selected option
+        const carTypeDropdown = document.getElementById("carTypeDropdown");
 
-    if (selectedVehicle.value) {
-        carTypeDropdown.innerHTML = `<option value="${selectedVehicle.dataset.carType}">${selectedVehicle.dataset.carType}</option>`;
-    } else {
-        carTypeDropdown.innerHTML = `<option value="">Select a Car Type</option>`; // Reset if no vehicle is selected
-    }
-});
+        if (selectedVehicle.value) {
+            carTypeDropdown.innerHTML = `<option value="${selectedVehicle.dataset.carType}">${selectedVehicle.dataset.carType}</option>`;
+        } else {
+            carTypeDropdown.innerHTML = `<option value="">Select a Car Type</option>`; // Reset if no vehicle is selected
+        }
+    });
+};
+
 
 
 // Load bookings dynamically
@@ -185,6 +206,7 @@ window.editBooking = async function editBooking(id) {
         alert("Failed to load booking data.");
     }
 };
+
 
 // Delete booking
 window.deleteBooking = async function deleteBooking(id) {
