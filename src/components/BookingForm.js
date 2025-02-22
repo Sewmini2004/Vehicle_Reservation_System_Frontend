@@ -35,12 +35,12 @@ export function BookingForm() {
           <div class="row">
             <div class="col-md-6 mb-3">
                 <label class="form-label">Pickup Location</label>
-                <input type="text" class="form-control" id="pickupLocation" readonly>
+                <input type="text" class="form-control" id="pickupLocation" >
                 <input type="hidden" id="pickupCoordinates">
             </div>
             <div class="col-md-6 mb-3">
                 <label class="form-label">Drop Location</label>
-                <input type="text" class="form-control" id="dropLocation" readonly>
+                <input type="text" class="form-control" id="dropLocation" >
                 <input type="hidden" id="dropCoordinates">
             </div>
         </div>
@@ -54,7 +54,7 @@ export function BookingForm() {
                 </div>
                 <div class="col-md-6 mb-3">
                    <label>Total Bill</label>
-                  <input type="number" step="0.01" class="form-control" id="totalBill" required>
+                  <input type="number" step="0.01" class="form-control" id="totalBill" readonly>
            </div>
               
             </div>
