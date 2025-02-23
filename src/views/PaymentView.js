@@ -24,7 +24,7 @@ export default function PaymentView() {
                                             <th>Payment Status</th>
                                             <th>
                                                 <center>
-                                                    <button type="button" class="btn btn-success" id="addPaymentbtn">
+                                                    <button type="button" class="btn btn-success" id="addPaymentBtn">
                                                         <i class="fas fa-plus"></i>
                                                     </button>
                                                 </center>
@@ -41,25 +41,24 @@ export default function PaymentView() {
                 </div>
             </div>
             
-            <div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg"> 
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="paymentModalLabel">Add Payment</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    ${PaymentForm()}
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-success" id="savePaymentBtn">Save Payment</button>
+           <div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="paymentModalLabel">Add Payment</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        ${PaymentForm()} 
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-success" id="savePaymentBtn">Save Payment</button>
+                    </div>
                 </div>
             </div>
         </div>
-</div>
 
-            
         </div>
     `;
 }

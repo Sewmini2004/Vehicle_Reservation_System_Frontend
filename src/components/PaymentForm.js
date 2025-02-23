@@ -1,11 +1,12 @@
 export function PaymentForm() {
     return `
         <form id="paymentForm" class="container">
+         <input type="hidden" id="paymentId">
             <div class="row">
                 <div class="col-md-4">
                     <div class="mb-3">
                         <label class="form-label">Total Amount</label>
-                        <input type="number" step="0.01" class="form-control" id="totalAmount" readonly>
+                        <input type="number" step="0.01" class="form-control" id="totalAmount" >
                     </div>
                 </div>
 
@@ -28,7 +29,7 @@ export function PaymentForm() {
                 <div class="col-md-4">
                     <div class="mb-3">
                         <label class="form-label">Final Amount</label>
-                        <input type="number" step="0.01" class="form-control" id="finalAmount" readonly>
+                        <input type="number" step="0.01" class="form-control" id="finalAmount" >
                     </div>
                 </div>
 

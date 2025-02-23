@@ -4,6 +4,24 @@ export function PaymentController() {
     const appDiv = document.getElementById("app");
     appDiv.innerHTML = PaymentView();
 
+
+    // Open modal for adding a new payment
+    document.getElementById("addPaymentBtn").addEventListener("click", () => {
+        console.log("Opening payment modal...");
+
+        // Reset the form and set up modal label
+        document.getElementById("paymentModalLabel").innerText = "Add Payment";
+        document.getElementById("paymentForm").reset(); // Reset the form
+
+        // Clear any previous values
+        document.getElementById("paymentId").value = "";
+
+        // Trigger Bootstrap modal
+        const paymentModal = new bootstrap.Modal(document.getElementById("paymentModal"));
+        paymentModal.show();  // This shows the modal
+    });
+
+
     // Retrieve booking details from session storage
     const booking = JSON.parse(sessionStorage.getItem("bookingDetails"));
     if (booking) {
@@ -16,6 +34,7 @@ export function PaymentController() {
         document.getElementById("dropLocation").value = booking.dropoffLocation;
         document.getElementById("bookingDate").value = booking.bookingDate;
     }
+
 
     // Function to calculate the final amount dynamically
     function calculateFinalAmount() {
@@ -50,7 +69,7 @@ export function PaymentController() {
         };
 
         try {
-            const response = await fetch("http://localhost:8088/payment", {
+            const response = await fetch("http://localhost:8088/Vehicle_Reservation_System_Backend_war/booking", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(paymentData),
@@ -67,10 +86,5 @@ export function PaymentController() {
         }
     });
 
-    // Add event listener to show the modal when "Add Payment" button is clicked
-    document.getElementById("addPaymentbtn").addEventListener("click", () => {
-        // Show the modal
-        const paymentModal = new bootstrap.Modal(document.getElementById('paymentModal'));
-        paymentModal.show();
-    });
+
 }

@@ -10,6 +10,7 @@ export function BookingController() {
     loadVehicles(); // Load vehicle dropdown data when page loads
     loadCustomers(); // Load customer dropdown
     loadDrivers();   // Load driver dropdown
+    loadBookings();
 
     document.getElementById("go-payment").addEventListener("click", function () {
         const bookingDetails = {
@@ -174,7 +175,7 @@ window.onload = function () {
 // Load bookings dynamically
 window.loadBookings = async function loadBookings() {
     try {
-        const response = await fetch("http://localhost:8088/booking");
+        const response = await fetch("http://localhost:8088/Vehicle_Reservation_System_Backend_war/booking");
         if (!response.ok) throw new Error("Failed to fetch bookings");
         const bookings = await response.json();
 
@@ -206,7 +207,7 @@ window.loadBookings = async function loadBookings() {
 // Edit booking
 window.editBooking = async function editBooking(id) {
     try {
-        const response = await fetch(`http://localhost:8088/booking?bookingId=${id}`);
+        const response = await fetch(`http://localhost:8088/Vehicle_Reservation_System_Backend_war/booking?bookingId=${id}`);
         const booking = await response.json();
         document.getElementById("bookingId").value = booking.bookingId;
         document.getElementById("customerDropdown").value = booking.customerId;
@@ -227,7 +228,7 @@ window.editBooking = async function editBooking(id) {
 window.deleteBooking = async function deleteBooking(id) {
     if (confirm("Are you sure you want to delete this booking?")) {
         try {
-            const response = await fetch(`http://localhost:8088/booking?bookingId=${id}`, { method: "DELETE" });
+            const response = await fetch(`http://localhost:8088/Vehicle_Reservation_System_Backend_war/booking?bookingId=${id}`, { method: "DELETE" });
             if (response.ok) {
                 alert("Booking deleted successfully!");
                 loadBookings();
