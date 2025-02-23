@@ -14,12 +14,21 @@ export default function PaymentView() {
                                 <table id="payment_table" class="table table-bordered table-hover display table-responsive-md">
                                     <thead>
                                         <tr>
+                                            <th>Bill ID</th>
                                             <th>Booking ID</th>
-                                            <th>Customer</th>
-                                            <th>Amount</th>
+                                            <th>Total Amount</th>
+                                            <th>Discount Amount</th>
+                                            <th>Tax Amount</th>
+                                            <th>Final Amount</th>
                                             <th>Payment Method</th>
                                             <th>Payment Status</th>
-                                            <th>Action</th>
+                                            <th>
+                                                <center>
+                                                    <button type="button" class="btn btn-success" id="addPaymentbtn">
+                                                        <i class="fas fa-plus"></i>
+                                                    </button>
+                                                </center>
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody id="paymentTableBody">
@@ -33,22 +42,24 @@ export default function PaymentView() {
             </div>
             
             <div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="paymentModalLabel">Add Payment</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            ${PaymentForm()}
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-success" id="savePaymentBtn">Save Payment</button>
-                        </div>
-                    </div>
+        <div class="modal-dialog modal-lg"> 
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="paymentModalLabel">Add Payment</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    ${PaymentForm()}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-success" id="savePaymentBtn">Save Payment</button>
                 </div>
             </div>
+        </div>
+</div>
+
+            
         </div>
     `;
 }

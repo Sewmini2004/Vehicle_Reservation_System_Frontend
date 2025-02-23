@@ -1,26 +1,52 @@
-// PaymentController.js
 import PaymentView from "../views/PaymentView";
 
 export function PaymentController() {
     const appDiv = document.getElementById("app");
     appDiv.innerHTML = PaymentView();
 
+    // Retrieve booking details from session storage
     const booking = JSON.parse(sessionStorage.getItem("bookingDetails"));
     if (booking) {
+        document.getElementById("bookingId").value = booking.bookingId;
+        document.getElementById("totalAmount").value = booking.totalBill;
         document.getElementById("customerId").value = booking.customerId;
         document.getElementById("driverId").value = booking.driverId;
         document.getElementById("vehicleId").value = booking.vehicleId;
         document.getElementById("pickupLocation").value = booking.pickupLocation;
         document.getElementById("dropLocation").value = booking.dropoffLocation;
         document.getElementById("bookingDate").value = booking.bookingDate;
-        document.getElementById("totalBill").value = booking.totalBill;
     }
 
+    // Function to calculate the final amount dynamically
+    function calculateFinalAmount() {
+        const total = parseFloat(document.getElementById("totalAmount").value) || 0;
+        const discount = parseFloat(document.getElementById("discountAmount").value) || 0;
+        const tax = parseFloat(document.getElementById("taxAmount").value) || 0;
+        const finalAmount = total - discount + tax;
+
+        document.getElementById("finalAmount").value = finalAmount.toFixed(2);
+    }
+
+    // Event listeners to update final amount in real-time
+    document.getElementById("discountAmount").addEventListener("input", calculateFinalAmount);
+    document.getElementById("taxAmount").addEventListener("input", calculateFinalAmount);
+
+    // Handle payment save
     document.getElementById("savePaymentBtn").addEventListener("click", async () => {
         const paymentData = {
-            ...booking,
-            paymentAmount: document.getElementById("paymentAmount").value,
+            bookingId: document.getElementById("bookingId").value,
+            customerId: document.getElementById("customerId").value,
+            driverId: document.getElementById("driverId").value,
+            vehicleId: document.getElementById("vehicleId").value,
+            pickupLocation: document.getElementById("pickupLocation").value,
+            dropLocation: document.getElementById("dropLocation").value,
+            bookingDate: document.getElementById("bookingDate").value,
+            totalAmount: document.getElementById("totalAmount").value,
+            discountAmount: document.getElementById("discountAmount").value,
+            taxAmount: document.getElementById("taxAmount").value,
+            finalAmount: document.getElementById("finalAmount").value,
             paymentMethod: document.getElementById("paymentMethod").value,
+            paymentStatus: document.getElementById("paymentStatus").value,
         };
 
         try {
@@ -32,12 +58,19 @@ export function PaymentController() {
 
             if (response.ok) {
                 alert("Payment successful!");
-                window.location.href = "/bookings"; // Redirect to booking list
+                location.reload(); // Refresh page to update payment table
             } else {
                 alert("Payment failed.");
             }
         } catch (error) {
             alert("An error occurred while processing payment.");
         }
+    });
+
+    // Add event listener to show the modal when "Add Payment" button is clicked
+    document.getElementById("addPaymentbtn").addEventListener("click", () => {
+        // Show the modal
+        const paymentModal = new bootstrap.Modal(document.getElementById('paymentModal'));
+        paymentModal.show();
     });
 }
