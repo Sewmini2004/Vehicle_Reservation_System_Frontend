@@ -24,8 +24,17 @@ export function navigateTo(url) {
 
 // Function to render the correct route
 export function renderRoute(url) {
-    const pageController = routes[url] || (() => document.getElementById("app").innerHTML = "<h1>404 - Not Found</h1>");
-    pageController(); // Call the appropriate controller function
+    // Check if the URL matches a dynamic route like /payment/{bookingId}
+    const dynamicPaymentMatch = url.match(/^\/payment\/(\d+)$/);  // /payment/{bookingId}
+
+    if (dynamicPaymentMatch) {
+        const bookingId = dynamicPaymentMatch[1]; // Extract the bookingId from the URL
+        PaymentController(bookingId); // Call PaymentController with the bookingId
+    } else {
+        // Otherwise, match static routes
+        const pageController = routes[url] || (() => document.getElementById("app").innerHTML = "<h1>404 - Not Found</h1>");
+        pageController(); // Call the controller for the static route
+    }
 }
 
 // Handle back/forward navigation
@@ -39,5 +48,6 @@ document.addEventListener("DOMContentLoaded", () => {
             navigateTo(e.target.getAttribute('href')); // Trigger route change
         }
     });
-    renderRoute(location.pathname); // Render initial route
+    renderRoute(location.pathname); // Render the initial route
 });
+

@@ -12,20 +12,28 @@ export function BookingController() {
     loadDrivers();   // Load driver dropdown
     loadBookings();
 
-    document.getElementById("go-payment").addEventListener("click", function () {
-        const bookingDetails = {
-            customerId: document.getElementById("customerDropdown").value,
-            driverId: document.getElementById("driverDropdown").value,
-            vehicleId: document.getElementById("vehicleDropdown").value,
-            carType: document.getElementById("carTypeDropdown").value,
-            pickupLocation: document.getElementById("pickupLocation").value,
-            dropoffLocation: document.getElementById("dropLocation").value,
-            bookingDate: document.getElementById("bookingDate").value,
-            totalBill: document.getElementById("totalBill").value,
-        };
+    document.addEventListener("DOMContentLoaded", function () {
+        const goPaymentBtn = document.getElementById("go-payment");
 
-        sessionStorage.setItem("bookingDetails", JSON.stringify(bookingDetails));
-        window.location.href = "/payment";
+        // Go to payment button logic
+        goPaymentBtn.addEventListener("click", function () {
+            // Collect booking data
+            const bookingData = {
+                customer: document.getElementById("customerDropdown").value,
+                vehicle: document.getElementById("vehicleDropdown").value,
+                driver: document.getElementById("driverDropdown").value,
+                pickupLocation: document.getElementById("pickupLocation").value,
+                dropLocation: document.getElementById("dropLocation").value,
+                bookingDate: document.getElementById("bookingDate").value,
+                totalBill: document.getElementById("totalBill").value,
+            };
+
+            // Convert booking data to query string
+            const queryString = new URLSearchParams(bookingData).toString();
+
+            // Redirect to the payment page with the booking data in the query string
+            window.location.href = `/payment?${queryString}`; // Pass data in URL
+        });
     });
 
 
