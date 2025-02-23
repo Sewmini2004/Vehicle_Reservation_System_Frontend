@@ -6,14 +6,27 @@ export function BookingController() {
     const appDiv = document.getElementById("app");
     appDiv.innerHTML = BookingView(); // Load booking view
 
-    document.getElementById("go-payment").addEventListener("click", function () {
-        window.location.href = "/payment";
-    });
-
     initMap(); // Initialize map for pickup and drop locations
     loadVehicles(); // Load vehicle dropdown data when page loads
     loadCustomers(); // Load customer dropdown
     loadDrivers();   // Load driver dropdown
+
+    document.getElementById("go-payment").addEventListener("click", function () {
+        const bookingDetails = {
+            customerId: document.getElementById("customerDropdown").value,
+            driverId: document.getElementById("driverDropdown").value,
+            vehicleId: document.getElementById("vehicleDropdown").value,
+            carType: document.getElementById("carTypeDropdown").value,
+            pickupLocation: document.getElementById("pickupLocation").value,
+            dropoffLocation: document.getElementById("dropLocation").value,
+            bookingDate: document.getElementById("bookingDate").value,
+            totalBill: document.getElementById("totalBill").value,
+        };
+
+        sessionStorage.setItem("bookingDetails", JSON.stringify(bookingDetails));
+        window.location.href = "/payment";
+    });
+
 
     setTimeout(() => {
         const vehicleDropdown = document.getElementById("vehicleDropdown");
@@ -43,6 +56,7 @@ export function BookingController() {
         new bootstrap.Modal(document.getElementById("bookingModal")).show();
     });
 
+/*
     document.getElementById("saveBookingBtn").addEventListener("click", async () => {
         const booking = {
             customerId: document.getElementById("customerDropdown").value,
@@ -72,6 +86,7 @@ export function BookingController() {
             alert("An error occurred while saving booking.");
         }
     });
+*/
 }
 
 // Function to load vehicles into the dropdown
