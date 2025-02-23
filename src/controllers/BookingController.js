@@ -12,6 +12,7 @@ export function BookingController() {
     loadDrivers();   // Load driver dropdown
     loadBookings();
 
+
     document.addEventListener("DOMContentLoaded", function () {
         const goPaymentBtn = document.getElementById("go-payment");
 
@@ -25,6 +26,7 @@ export function BookingController() {
                 pickupLocation: document.getElementById("pickupLocation").value,
                 dropLocation: document.getElementById("dropLocation").value,
                 bookingDate: document.getElementById("bookingDate").value,
+                carType: document.getElementById("carTypeDropdown").value,
                 totalBill: document.getElementById("totalBill").value,
             };
 
@@ -65,37 +67,6 @@ export function BookingController() {
         new bootstrap.Modal(document.getElementById("bookingModal")).show();
     });
 
-/*
-    document.getElementById("saveBookingBtn").addEventListener("click", async () => {
-        const booking = {
-            customerId: document.getElementById("customerDropdown").value,
-            driverId: document.getElementById("driverDropdown").value,
-            vehicleId: document.getElementById("vehicleDropdown").value,
-            pickupLocation: document.getElementById("pickupLocation").value,
-            dropoffLocation: document.getElementById("dropLocation").value,
-            bookingDate: document.getElementById("bookingDate").value,
-            totalBill: document.getElementById("totalBill").value,
-        };
-
-        try {
-            const response = await fetch("http://localhost:8088/Vehicle_Reservation_System_Backend_war/booking", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(booking),
-            });
-
-            const result = await response.json();
-            if (response.ok) {
-                alert("Booking saved successfully!");
-                loadBookings(); // Reload the booking list
-            } else {
-                alert(`Failed to save booking: ${result.message}`);
-            }
-        } catch (error) {
-            alert("An error occurred while saving booking.");
-        }
-    });
-*/
 }
 
 // Function to load vehicles into the dropdown

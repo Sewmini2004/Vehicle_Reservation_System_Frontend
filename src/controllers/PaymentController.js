@@ -3,6 +3,7 @@ import PaymentView from "../views/PaymentView";
 export function PaymentController() {
     const appDiv = document.getElementById("app");
     appDiv.innerHTML = PaymentView(); // Render the payment view
+    loadPayments();
 
     // Wait for the DOM to be fully loaded
     document.addEventListener('DOMContentLoaded', function () {
@@ -44,6 +45,9 @@ export function PaymentController() {
             if (document.getElementById("bookingDate")) {
                 document.getElementById("bookingDate").value = booking.bookingDate;
             }
+            if (document.getElementById("carType")) {
+                document.getElementById("carType").value = booking.carType;
+            }
             if (document.getElementById("totalAmount")) {
                 document.getElementById("totalAmount").value = booking.totalBill;
             }
@@ -71,6 +75,7 @@ export function PaymentController() {
             const customer = queryParams.get("customer");
             const vehicle = queryParams.get("vehicle");
             const driver = queryParams.get("driver");
+            const carType = queryParams.get("carType");
             const pickupLocation = queryParams.get("pickupLocation");
             const dropLocation = queryParams.get("dropLocation");
             const bookingDate = queryParams.get("bookingDate");
@@ -79,6 +84,7 @@ export function PaymentController() {
             console.log("Customer:", customer);
             console.log("Vehicle:", vehicle);
             console.log("Driver:", driver);
+            console.log("Driver:", carType);
             console.log("Pickup Location:", pickupLocation);
             console.log("Drop Location:", dropLocation);
             console.log("Booking Date:", bookingDate);
@@ -92,6 +98,7 @@ export function PaymentController() {
                 vehicleId: vehicle,
                 pickupLocation: pickupLocation,
                 dropLocation: dropLocation,
+                carType: carType,
                 bookingDate: bookingDate,
                 totalBill: document.getElementById("totalAmount").value,
                 discountAmount: document.getElementById("discountAmount").value,
@@ -131,3 +138,69 @@ export function PaymentController() {
         });
     });
 }
+
+// Fetch payments from the backend and display them in the table
+async function loadPayments() {
+    try {
+        const response = await fetch("http://localhost:8088/Vehicle_Reservation_System_Backend_war/booking"); // Adjust the URL to your API
+        const payments = await response.json();
+
+        const paymentTableBody = document.getElementById("paymentTableBody");
+        paymentTableBody.innerHTML = ''; // Clear existing rows
+
+        payments.forEach(payment => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                <td>${payment.billId}</td>
+                <td>${payment.bookingId}</td>
+                <td>${payment.totalAmount}</td>
+                <td>${payment.discountAmount}</td>
+                <td>${payment.taxAmount}</td>
+                <td>${payment.finalAmount}</td>
+                <td>${payment.paymentMethod}</td>
+                <td>${payment.paymentStatus}</td>
+                <td>
+                    <center>
+                        <button type="button" class="btn btn-warning" data-payment-id="${payment.billId}" id="editPaymentBtn">
+                            Edit
+                        </button>
+                    </center>
+                </td>
+            `;
+            paymentTableBody.appendChild(row);
+        });
+
+        // Event listener for "Edit" buttons to edit payments
+        document.querySelectorAll("#editPaymentBtn").forEach(button => {
+            button.addEventListener("click", (event) => {
+                const paymentId = event.target.getAttribute("data-payment-id");
+
+                // Retrieve payment details and open the modal for editing
+                fetch(`http://localhost:8088/Vehicle_Reservation_System_Backend_war/payments/${paymentId}`)
+                    .then(response => response.json())
+                    .then(payment => {
+                        // Set the session storage or handle the data for editing
+                        sessionStorage.setItem("paymentDetails", JSON.stringify(payment));
+
+                        // Populate the form in the modal with the existing payment data
+                        document.getElementById("paymentId").value = payment.billId;
+                        document.getElementById("totalAmount").value = payment.totalAmount;
+                        document.getElementById("discountAmount").value = payment.discountAmount;
+                        document.getElementById("taxAmount").value = payment.taxAmount;
+                        document.getElementById("finalAmount").value = payment.finalAmount;
+                        document.getElementById("paymentMethod").value = payment.paymentMethod;
+                        document.getElementById("paymentStatus").value = payment.paymentStatus;
+
+                        // Open the payment modal for editing
+                        const paymentModal = new bootstrap.Modal(document.getElementById("paymentModal"));
+                        paymentModal.show();
+                    });
+            });
+        });
+
+    } catch (error) {
+        console.error("Error fetching payments:", error);
+        alert("An error occurred while loading payments.");
+    }
+}
+
