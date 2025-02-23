@@ -42,7 +42,7 @@ export default function BookingView() {
             </div>
             
             <div class="modal fade" id="bookingModal" tabindex="-1" aria-labelledby="bookingModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
+                <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="bookingModalLabel">Add Booking</h5>
