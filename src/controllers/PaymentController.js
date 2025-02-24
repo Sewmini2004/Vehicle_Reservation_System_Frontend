@@ -142,7 +142,7 @@ export function PaymentController() {
 // Fetch payments from the backend and display them in the table
 async function loadPayments() {
     try {
-        const response = await fetch("http://localhost:8088/Vehicle_Reservation_System_Backend_war/booking"); // Adjust the URL to your API
+        const response = await fetch("http://localhost:8088/Vehicle_Reservation_System_Backend_war/billing");
         const payments = await response.json();
 
         const paymentTableBody = document.getElementById("paymentTableBody");
