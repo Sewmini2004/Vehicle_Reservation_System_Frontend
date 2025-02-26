@@ -162,19 +162,30 @@ window.loadBookings = async function loadBookings() {
         tableBody.innerHTML = "";
 
         bookings.forEach(booking => {
+            let editBtn = '';
+            let deleteBtn = '';
+
+
+            editBtn = ` <a class="btn btn-warning btn-sm " title="Edit" onclick="editBooking(${booking.bookingId})"><i class="fa fa-edit"></i></a>`;
+            deleteBtn = ` <a class="btn btn-danger btn-sm " title="Delete" onclick="deleteBooking(${booking.bookingId})"><i class="fa fa-trash"></i></a>`;
+
             const row = document.createElement("tr");
             row.innerHTML = `
                 <td>${booking.customerId}</td>
                 <td>${booking.driverId}</td>
                 <td>${booking.vehicleId}</td>
                 <td>${booking.pickupLocation}</td>
-                <td>${booking.dropoffLocation}</td>
+                <td>${booking.dropLocation}</td>
                 <td>${booking.bookingDate}</td>
+                <td>${booking.carType}</td>
                 <td>${booking.totalBill}</td>
-                <td>
-                    <button class="btn btn-warning btn-sm" onclick="editBooking(${booking.bookingId})">Edit</button>
-                    <button class="btn btn-danger btn-sm" onclick="deleteBooking(${booking.bookingId})">Delete</button>
+                <td class="table-border-right">
+                    <center>
+                        ${editBtn}
+                        ${deleteBtn}
+                    </center>
                 </td>
+
             `;
             tableBody.appendChild(row);
         });

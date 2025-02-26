@@ -162,7 +162,7 @@ async function loadPayments() {
                 <td>
                     <center>
                         <button type="button" class="btn btn-warning" data-payment-id="${payment.billId}" id="editPaymentBtn">
-                            Edit
+                            <i class="fa fa-edit"></i>
                         </button>
                     </center>
                 </td>
