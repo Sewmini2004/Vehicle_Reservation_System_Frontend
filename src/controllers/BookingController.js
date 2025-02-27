@@ -161,19 +161,27 @@ window.loadBookings = async function loadBookings() {
         const tableBody = document.getElementById("bookingTableBody");
         tableBody.innerHTML = "";
 
-        bookings.forEach(booking => {
+        for (const booking of bookings) {
+            // Fetch the customer, driver, and vehicle details using the IDs
+            const customerResponse = await fetch(`http://localhost:8088/Vehicle_Reservation_System_Backend_war/customer?customerId=${booking.customerId}`);
+            const driverResponse = await fetch(`http://localhost:8088/Vehicle_Reservation_System_Backend_war/driver?driverId=${booking.driverId}`);
+            const vehicleResponse = await fetch(`http://localhost:8088/Vehicle_Reservation_System_Backend_war/vehicle?vehicleId=${booking.vehicleId}`);
+
+            const customer = await customerResponse.json();
+            const driver = await driverResponse.json();
+            const vehicle = await vehicleResponse.json();
+
             let editBtn = '';
             let deleteBtn = '';
-
 
             editBtn = ` <a class="btn btn-warning btn-sm " title="Edit" onclick="editBooking(${booking.bookingId})"><i class="fa fa-edit"></i></a>`;
             deleteBtn = ` <a class="btn btn-danger btn-sm " title="Delete" onclick="deleteBooking(${booking.bookingId})"><i class="fa fa-trash"></i></a>`;
 
             const row = document.createElement("tr");
             row.innerHTML = `
-                <td>${booking.customerId}</td>
-                <td>${booking.driverId}</td>
-                <td>${booking.vehicleId}</td>
+                <td>${customer.name}</td> <!-- Display customer name -->
+                <td>${driver.name}</td> <!-- Display driver name -->
+                <td>${vehicle.registrationNumber} - ${vehicle.model}</td> <!-- Display vehicle registration number and model -->
                 <td>${booking.pickupLocation}</td>
                 <td>${booking.dropLocation}</td>
                 <td>${booking.bookingDate}</td>
@@ -185,27 +193,40 @@ window.loadBookings = async function loadBookings() {
                         ${deleteBtn}
                     </center>
                 </td>
-
             `;
             tableBody.appendChild(row);
-        });
+        }
     } catch (error) {
         alert("Error loading bookings.");
     }
 };
+
+
+
 
 // Edit booking
 window.editBooking = async function editBooking(id) {
     try {
         const response = await fetch(`http://localhost:8088/Vehicle_Reservation_System_Backend_war/booking?bookingId=${id}`);
         const booking = await response.json();
+
+        // Set form fields
         document.getElementById("bookingId").value = booking.bookingId;
         document.getElementById("customerDropdown").value = booking.customerId;
         document.getElementById("driverDropdown").value = booking.driverId;
         document.getElementById("vehicleDropdown").value = booking.vehicleId;
         document.getElementById("pickupLocation").value = booking.pickupLocation;
-        document.getElementById("dropLocation").value = booking.dropoffLocation;
-        document.getElementById("bookingDate").value = booking.bookingDate;
+        document.getElementById("dropLocation").value = booking.dropLocation;
+
+        console.log("+++++ booking.bookingDate ++++++" + booking.bookingDate); // For debugging
+
+        // Format bookingDate to yyyy-mm-dd for the date input field
+        const formattedDateForInput = formatDateToInput(booking.bookingDate);
+        console.log("+++++ formattedDateForInput ++++++" + formattedDateForInput); // For debugging
+
+        // Set the bookingDate input field value (Ensure the date format is correct)
+        document.getElementById("bookingDate").value = formattedDateForInput;
+
         document.getElementById("totalBill").value = booking.totalBill;
         new bootstrap.Modal(document.getElementById("bookingModal")).show();
     } catch (error) {
@@ -213,6 +234,15 @@ window.editBooking = async function editBooking(id) {
     }
 };
 
+// Helper function to format the date to yyyy-mm-dd for input type="date"
+function formatDateToInput(dateString) {
+    const date = new Date(dateString);  // Convert string to Date object
+    const year = date.getFullYear();    // Get the full year
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Get the month (add 1 because months are 0-indexed) and pad with leading zero
+    const day = String(date.getDate()).padStart(2, '0');  // Get the day and pad with leading zero
+
+    return `${year}-${month}-${day}`;  // Return formatted as yyyy-mm-dd
+}
 
 // Delete booking
 window.deleteBooking = async function deleteBooking(id) {

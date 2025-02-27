@@ -52,7 +52,7 @@ export function BookingForm() {
             <div class="row">
                 <div class="col-md-6 mb-3">
                <label>Booking Date</label>
-               <input type="date" class="form-control" id="bookingDate" required>
+               <input type="date" class="form-control" id="bookingDate" name="bookingDate" value="" required>
                 </div>
                 <div class="col-md-6 mb-3">
                    <label>Total Bill</label>
