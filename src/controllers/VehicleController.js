@@ -32,14 +32,14 @@ export function VehicleController() {
             let response;
             if (vehicleId) {
                 // Update existing vehicle
-                response = await fetch(`http://localhost:8088/Vehicle_Reservation_System_Backend_war/vehicle?vehicleId=${vehicleId}`, {
+                response = await fetch(`http://localhost:8091/Vehicle_Reservation_System_Backend_war/vehicle?vehicleId=${vehicleId}`, {
                     method: "PUT",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(vehicle),
                 });
             } else {
                 // Add new vehicle
-                response = await fetch("http://localhost:8088/Vehicle_Reservation_System_Backend_war/vehicle", {
+                response = await fetch("http://localhost:8091/Vehicle_Reservation_System_Backend_war/vehicle", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(vehicle),
@@ -68,7 +68,7 @@ export function VehicleController() {
 window.loadVehicles = async function loadVehicles() {
     console.log("Loading vehicle data...");
     try {
-        const response = await fetch("http://localhost:8088/Vehicle_Reservation_System_Backend_war/vehicle");
+        const response = await fetch("http://localhost:8091/Vehicle_Reservation_System_Backend_war/vehicle");
 
         // Check if the response is OK
         if (!response.ok) {
@@ -120,7 +120,7 @@ window.editVehicle = async function editVehicle(id) {
     console.log("Editing vehicle with ID:", id);
     try {
         // Fetch the specific vehicle by ID
-        const response = await fetch(`http://localhost:8088/Vehicle_Reservation_System_Backend_war/vehicle?vehicleId=${id}`);
+        const response = await fetch(`http://localhost:8091/Vehicle_Reservation_System_Backend_war/vehicle?vehicleId=${id}`);
 
         // Parse the JSON response
         const vehicle = await response.json();
@@ -153,7 +153,7 @@ window.deleteVehicle = async function deleteVehicle(id) {
     const confirmDelete = confirm("Are you sure you want to delete this vehicle?");
     if (confirmDelete) {
         try {
-            const response = await fetch(`http://localhost:8088/Vehicle_Reservation_System_Backend_war/vehicle?vehicleId=${id}`, { method: "DELETE" });
+            const response = await fetch(`http://localhost:8091/Vehicle_Reservation_System_Backend_war/vehicle?vehicleId=${id}`, { method: "DELETE" });
             const result = await response.json();
             if (response.ok) {
                 alert("Vehicle deleted successfully!");

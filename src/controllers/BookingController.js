@@ -72,7 +72,7 @@ export function BookingController() {
 // Function to load vehicles into the dropdown
 async function loadVehicles() {
     try {
-        const response = await fetch("http://localhost:8088/Vehicle_Reservation_System_Backend_war/vehicle"); // Update endpoint if needed
+        const response = await fetch("http://localhost:8091/Vehicle_Reservation_System_Backend_war/vehicle"); // Update endpoint if needed
         if (!response.ok) throw new Error("Failed to fetch vehicles");
 
         const vehicles = await response.json();
@@ -95,7 +95,7 @@ async function loadVehicles() {
 // Function to load customers into the dropdown
 async function loadCustomers() {
     try {
-        const response = await fetch("http://localhost:8088/Vehicle_Reservation_System_Backend_war/customer"); // Update the API URL if needed
+        const response = await fetch("http://localhost:8091/Vehicle_Reservation_System_Backend_war/customer"); // Update the API URL if needed
         if (!response.ok) throw new Error("Failed to fetch customers");
 
         const customers = await response.json();
@@ -117,7 +117,7 @@ async function loadCustomers() {
 // Function to load drivers into the dropdown
 async function loadDrivers() {
     try {
-        const response = await fetch("http://localhost:8088/Vehicle_Reservation_System_Backend_war/driver"); // Update API URL if needed
+        const response = await fetch("http://localhost:8091/Vehicle_Reservation_System_Backend_war/driver"); // Update API URL if needed
         if (!response.ok) throw new Error("Failed to fetch drivers");
 
         const drivers = await response.json();
@@ -154,7 +154,7 @@ window.onload = function () {
 // Load bookings dynamically
 window.loadBookings = async function loadBookings() {
     try {
-        const response = await fetch("http://localhost:8088/Vehicle_Reservation_System_Backend_war/booking");
+        const response = await fetch("http://localhost:8091/Vehicle_Reservation_System_Backend_war/booking");
         if (!response.ok) throw new Error("Failed to fetch bookings");
         const bookings = await response.json();
 
@@ -163,9 +163,9 @@ window.loadBookings = async function loadBookings() {
 
         for (const booking of bookings) {
             // Fetch the customer, driver, and vehicle details using the IDs
-            const customerResponse = await fetch(`http://localhost:8088/Vehicle_Reservation_System_Backend_war/customer?customerId=${booking.customerId}`);
-            const driverResponse = await fetch(`http://localhost:8088/Vehicle_Reservation_System_Backend_war/driver?driverId=${booking.driverId}`);
-            const vehicleResponse = await fetch(`http://localhost:8088/Vehicle_Reservation_System_Backend_war/vehicle?vehicleId=${booking.vehicleId}`);
+            const customerResponse = await fetch(`http://localhost:8091/Vehicle_Reservation_System_Backend_war/customer?customerId=${booking.customerId}`);
+            const driverResponse = await fetch(`http://localhost:8091/Vehicle_Reservation_System_Backend_war/driver?driverId=${booking.driverId}`);
+            const vehicleResponse = await fetch(`http://localhost:8091/Vehicle_Reservation_System_Backend_war/vehicle?vehicleId=${booking.vehicleId}`);
 
             const customer = await customerResponse.json();
             const driver = await driverResponse.json();
@@ -207,7 +207,7 @@ window.loadBookings = async function loadBookings() {
 // Edit booking
 window.editBooking = async function editBooking(id) {
     try {
-        const response = await fetch(`http://localhost:8088/Vehicle_Reservation_System_Backend_war/booking?bookingId=${id}`);
+        const response = await fetch(`http://localhost:8091/Vehicle_Reservation_System_Backend_war/booking?bookingId=${id}`);
         const booking = await response.json();
 
         // Set form fields
@@ -218,16 +218,10 @@ window.editBooking = async function editBooking(id) {
         document.getElementById("pickupLocation").value = booking.pickupLocation;
         document.getElementById("dropLocation").value = booking.dropLocation;
 
-        console.log("+++++ booking.bookingDate ++++++" + booking.bookingDate); // For debugging
-
-        // Format bookingDate to yyyy-mm-dd for the date input field
         const formattedDateForInput = formatDateToInput(booking.bookingDate);
-        console.log("+++++ formattedDateForInput ++++++" + formattedDateForInput); // For debugging
-
-        // Set the bookingDate input field value (Ensure the date format is correct)
         document.getElementById("bookingDate").value = formattedDateForInput;
-
         document.getElementById("totalBill").value = booking.totalBill;
+        document.getElementById("bookingModalLabel").innerText = "Edit Booking";
         new bootstrap.Modal(document.getElementById("bookingModal")).show();
     } catch (error) {
         alert("Failed to load booking data.");
@@ -236,19 +230,19 @@ window.editBooking = async function editBooking(id) {
 
 // Helper function to format the date to yyyy-mm-dd for input type="date"
 function formatDateToInput(dateString) {
-    const date = new Date(dateString);  // Convert string to Date object
-    const year = date.getFullYear();    // Get the full year
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // Get the month (add 1 because months are 0-indexed) and pad with leading zero
-    const day = String(date.getDate()).padStart(2, '0');  // Get the day and pad with leading zero
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
 
-    return `${year}-${month}-${day}`;  // Return formatted as yyyy-mm-dd
+    return `${year}-${month}-${day}`;
 }
 
 // Delete booking
 window.deleteBooking = async function deleteBooking(id) {
     if (confirm("Are you sure you want to delete this booking?")) {
         try {
-            const response = await fetch(`http://localhost:8088/Vehicle_Reservation_System_Backend_war/booking?bookingId=${id}`, { method: "DELETE" });
+            const response = await fetch(`http://localhost:8091/Vehicle_Reservation_System_Backend_war/booking?bookingId=${id}`, { method: "DELETE" });
             if (response.ok) {
                 alert("Booking deleted successfully!");
                 loadBookings();
