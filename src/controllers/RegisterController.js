@@ -1,10 +1,9 @@
-import UserView from "../views/RegisterView.js";
+import RegisterView from "../views/RegisterView.js";
 
 export function RegisterController() {
     const appDiv = document.getElementById("app");
-    appDiv.innerHTML = UserView(); // Load User Registration View
+    appDiv.innerHTML = RegisterView();
 
-    // Open modal for adding a new user
     document.getElementById("registerUserBtn").addEventListener("click", () => {
         console.log("Opening User Registration Modal");
         document.getElementById("userModalLabel").innerText = "Register User";

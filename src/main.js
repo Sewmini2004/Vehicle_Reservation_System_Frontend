@@ -13,6 +13,7 @@ document.querySelector('#app').innerHTML = `
       <li><a href="/driver" data-link>Driver Management</a></li>
       <li><a href="/vehicle" data-link>Vehicle Management</a></li>
       <li><a href="/login" data-link>Login</a></li>
+      <li><a href="/register" data-link>Register</a></li>
     </ul>
   </nav>
 `;
