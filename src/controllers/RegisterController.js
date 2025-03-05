@@ -4,6 +4,12 @@ export function RegisterController() {
     const appDiv = document.getElementById("app");
     appDiv.innerHTML = RegisterView();
 
+    setTimeout(() => {
+        const sidebar = document.querySelector(".sidebar");
+        const mainPanel = document.querySelector(".main-panel");
+        if (sidebar) sidebar.style.display = "none";
+        if (mainPanel) mainPanel.style.marginLeft = "0";
+    }, 0);
     document.getElementById("registerUserBtn").addEventListener("click", () => {
         console.log("Opening User Registration Modal");
         document.getElementById("userModalLabel").innerText = "Register User";
