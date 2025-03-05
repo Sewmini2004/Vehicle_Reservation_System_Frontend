@@ -32,14 +32,14 @@ export function DriverController() {
             let response;
             if (driverId) {
                 // Update existing driver
-                response = await fetch(`http://localhost:8088/Vehicle_Reservation_System_Backend_war/driver?driverId=${driverId}`, {
+                response = await fetch(`http://localhost:8091/Vehicle_Reservation_System_Backend_war/driver?driverId=${driverId}`, {
                     method: "PUT",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(driver),
                 });
             } else {
                 // Add new driver
-                response = await fetch("http://localhost:8088/Vehicle_Reservation_System_Backend_war/driver", {
+                response = await fetch("http://localhost:8091/Vehicle_Reservation_System_Backend_war/driver", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(driver),
@@ -67,7 +67,7 @@ export function DriverController() {
 window.loadDrivers = async function loadDrivers() {
     console.log("Loading driver data...");
     try {
-        const response = await fetch("http://localhost:8088/Vehicle_Reservation_System_Backend_war/driver");
+        const response = await fetch("http://localhost:8091/Vehicle_Reservation_System_Backend_war/driver");
 
         // Check if the response is OK
         if (!response.ok) {
@@ -121,7 +121,7 @@ window.editDriver = async function editDriver(id) {
     console.log("Editing driver with ID:", id);
     try {
         // Fetch the specific driver by ID
-        const response = await fetch(`http://localhost:8088/Vehicle_Reservation_System_Backend_war/driver?driverId=${id}`);
+        const response = await fetch(`http://localhost:8091/Vehicle_Reservation_System_Backend_war/driver?driverId=${id}`);
 
         // Parse the JSON response
         const driver = await response.json();
@@ -154,7 +154,7 @@ window.deleteDriver = async function deleteDriver(id) {
     const confirmDelete = confirm("Are you sure you want to delete this driver?");
     if (confirmDelete) {
         try {
-            const response = await fetch(`http://localhost:8088/Vehicle_Reservation_System_Backend_war/driver?driverId=${id}`, { method: "DELETE" });
+            const response = await fetch(`http://localhost:8091/Vehicle_Reservation_System_Backend_war/driver?driverId=${id}`, { method: "DELETE" });
             const result = await response.json();
             if (response.ok) {
                 alert("Driver deleted successfully!");

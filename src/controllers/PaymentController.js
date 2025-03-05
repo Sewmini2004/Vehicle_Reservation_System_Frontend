@@ -118,7 +118,7 @@ export function PaymentController() {
             console.log(JSON.stringify(paymentData))
             try {
                 // Send payment data to backend
-                const response = await fetch("http://localhost:8088/Vehicle_Reservation_System_Backend_war/booking", {
+                const response = await fetch("http://localhost:8091/Vehicle_Reservation_System_Backend_war/booking", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(paymentData),
@@ -142,7 +142,7 @@ export function PaymentController() {
 // Fetch payments from the backend and display them in the table
 async function loadPayments() {
     try {
-        const response = await fetch("http://localhost:8088/Vehicle_Reservation_System_Backend_war/booking"); // Adjust the URL to your API
+        const response = await fetch("http://localhost:8091/Vehicle_Reservation_System_Backend_war/billing");
         const payments = await response.json();
 
         const paymentTableBody = document.getElementById("paymentTableBody");
@@ -162,7 +162,7 @@ async function loadPayments() {
                 <td>
                     <center>
                         <button type="button" class="btn btn-warning" data-payment-id="${payment.billId}" id="editPaymentBtn">
-                            Edit
+                            <i class="fa fa-edit"></i>
                         </button>
                     </center>
                 </td>
@@ -176,7 +176,7 @@ async function loadPayments() {
                 const paymentId = event.target.getAttribute("data-payment-id");
 
                 // Retrieve payment details and open the modal for editing
-                fetch(`http://localhost:8088/Vehicle_Reservation_System_Backend_war/payments/${paymentId}`)
+                fetch(`http://localhost:8091/Vehicle_Reservation_System_Backend_war/payments/${paymentId}`)
                     .then(response => response.json())
                     .then(payment => {
                         // Set the session storage or handle the data for editing

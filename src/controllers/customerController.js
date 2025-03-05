@@ -31,14 +31,14 @@ export function CustomerController() {
             let response;
             if (customerId) {
                 // Update existing customer
-                response = await fetch(`http://localhost:8088/Vehicle_Reservation_System_Backend_war/customer?customerId=${customerId}`, {
+                response = await fetch(`http://localhost:8091/Vehicle_Reservation_System_Backend_war/customer?customerId=${customerId}`, {
                     method: "PUT",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(customer),
                 });
             } else {
                 // Add new customer
-                response = await fetch("http://localhost:8088/Vehicle_Reservation_System_Backend_war/customer", {
+                response = await fetch("http://localhost:8091/Vehicle_Reservation_System_Backend_war/customer", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(customer),
@@ -66,7 +66,7 @@ export function CustomerController() {
 window.loadCustomers = async function loadCustomers() {
     console.log("Loading customer data...");
     try {
-        const response = await fetch("http://localhost:8088/Vehicle_Reservation_System_Backend_war/customer");
+        const response = await fetch("http://localhost:8091/Vehicle_Reservation_System_Backend_war/customer");
 
         // Check if the response is OK
         if (!response.ok) {
@@ -122,7 +122,7 @@ window.editCustomer = async function editCustomer(id) {
     console.log("Editing customer with ID:", id);
     try {
         // Fetch the list of all customers
-        const response = await fetch(`http://localhost:8088/Vehicle_Reservation_System_Backend_war/customer`);
+        const response = await fetch(`http://localhost:8091/Vehicle_Reservation_System_Backend_war/customer`);
 
         // Parse the JSON response
         const customers = await response.json();
@@ -166,7 +166,7 @@ window.editCustomer = async function editCustomer(id) {
     const confirmDelete = confirm("Are you sure you want to delete this customer?");
     if (confirmDelete) {
         try {
-            const response = await fetch(`http://localhost:8088/Vehicle_Reservation_System_Backend_war/customer?customerId=${id}`, { method: "DELETE" });
+            const response = await fetch(`http://localhost:8091/Vehicle_Reservation_System_Backend_war/customer?customerId=${id}`, { method: "DELETE" });
             const result = await response.json();
             if (response.ok) {
                 alert("Customer deleted successfully!");
