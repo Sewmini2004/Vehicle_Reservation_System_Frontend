@@ -18,7 +18,7 @@ export function DriverController() {
     document.getElementById("saveDriverBtn").addEventListener("click", async () => {
         const driverId = document.getElementById("driverId").value;
         const driver = {
-            driverId: driverId,
+            driverId:driverId ? parseInt(driverId) : 0,
             name: document.getElementById("name").value,
             licenseNumber: document.getElementById("licenseNumber").value,
             status: document.getElementById("status").value,

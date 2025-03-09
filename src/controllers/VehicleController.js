@@ -18,7 +18,7 @@ export function VehicleController() {
     document.getElementById("saveVehicleBtn").addEventListener("click", async () => {
         const vehicleId = document.getElementById("vehicleId").value;
         const vehicle = {
-            vehicleId: vehicleId,
+            vehicleId: vehicleId ? parseInt(vehicleId) : 0,
             carType: document.getElementById("carType").value,
             model: document.getElementById("model").value,
             availabilityStatus: document.getElementById("availabilityStatus").value,
