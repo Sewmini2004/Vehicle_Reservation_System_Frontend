@@ -22,11 +22,11 @@ export function RegisterController() {
     document.getElementById("saveUserBtn").addEventListener("click", async () => {
         const userId = document.getElementById("userId").value;
         const user = {
-            userId: userId ? parseInt(userId) : null,
+            userId: userId ? parseInt(userId) : 0,
             username: document.getElementById("username").value,
             password: document.getElementById("password").value,
-            first_name: document.getElementById("firstName").value,
-            last_name: document.getElementById("lastName").value,
+            firstName: document.getElementById("firstName").value,
+            lastName: document.getElementById("lastName").value,
             email: document.getElementById("email").value,
         };
 
@@ -34,14 +34,14 @@ export function RegisterController() {
             let response;
             if (userId) {
                 // Update existing user
-                response = await fetch(`http://localhost:8091/api/user?userId=${userId}`, {
+                response = await fetch(`http://localhost:8091/Vehicle_Reservation_System_Backend_war/register?userId=${userId}`, {
                     method: "PUT",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(user),
                 });
             } else {
                 // Register new user
-                response = await fetch("http://localhost:8091/api/user", {
+                response = await fetch("http://localhost:8091/Vehicle_Reservation_System_Backend_war/register", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(user),
@@ -52,6 +52,7 @@ export function RegisterController() {
             if (response.ok) {
                 alert("User registered successfully!");
                 bootstrap.Modal.getInstance(document.getElementById("userModal")).hide();
+                window.location.href = "/login";
             } else {
                 alert(`Failed to register user: ${result.message}`);
             }
