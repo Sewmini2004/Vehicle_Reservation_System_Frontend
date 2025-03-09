@@ -17,7 +17,7 @@ export function CustomerController() {
     document.getElementById("saveCustomerBtn").addEventListener("click", async () => {
         const customerId = document.getElementById("customerId").value;
         const customer = {
-            customerId:customerId,
+            customerId:customerId ? parseInt(customerId) : 0,
             userId:1,
             name: document.getElementById("name").value,
             address: document.getElementById("address").value,
