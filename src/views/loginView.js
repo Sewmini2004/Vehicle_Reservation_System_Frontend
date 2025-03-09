@@ -15,7 +15,7 @@ export function LoginForm() {
 
             <div class="text-center mt-3">
                 <span>Don't have an account?</span>
-                <a href="/signup" class="text-primary" data-link>Register</a>
+                <a href="/register"  id="registerLink" class="text-primary" data-link>Register</a>
             </div>
         </form>
     `;
