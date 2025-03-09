@@ -2,7 +2,6 @@ import BookingView from "../views/BookingView";
 import { initMap } from "./MapController";
 
 export function BookingController() {
-
     const appDiv = document.getElementById("app");
     appDiv.innerHTML = BookingView(); // Load booking view
 
@@ -12,12 +11,10 @@ export function BookingController() {
     loadDrivers();   // Load driver dropdown
     loadBookings();
 
+    // Use event delegation to handle dynamically created buttons
+    document.addEventListener("click", function (event) {
+        if (event.target && event.target.id === "go-payment") {
 
-    document.addEventListener("DOMContentLoaded", function () {
-        const goPaymentBtn = document.getElementById("go-payment");
-
-        // Go to payment button logic
-        goPaymentBtn.addEventListener("click", function () {
             // Collect booking data
             const bookingData = {
                 customer: document.getElementById("customerDropdown").value,
@@ -30,14 +27,22 @@ export function BookingController() {
                 totalBill: document.getElementById("totalBill").value,
             };
 
+            console.log("Collected Booking Data:", bookingData);
+
             // Convert booking data to query string
             const queryString = new URLSearchParams(bookingData).toString();
 
-            // Redirect to the payment page with the booking data in the query string
-            window.location.href = `/payment?${queryString}`; // Pass data in URL
-        });
+            window.location.href = `/payment?${queryString}`;
+        }
     });
 
+    // Open modal for adding a new booking
+    document.getElementById("addBookingBtn").addEventListener("click", () => {
+        document.getElementById("bookingModalLabel").innerText = "Add Booking";
+        document.getElementById("bookingForm").reset();
+        document.getElementById("bookingId").value = "";
+        new bootstrap.Modal(document.getElementById("bookingModal")).show();
+    });
 
     setTimeout(() => {
         const vehicleDropdown = document.getElementById("vehicleDropdown");
@@ -57,16 +62,6 @@ export function BookingController() {
             console.error("Vehicle or Car Type dropdown not found in the DOM.");
         }
     }, 100); // Delay to ensure DOM is rendered
-
-
-    // Open modal for adding a new booking
-    document.getElementById("addBookingBtn").addEventListener("click", () => {
-        document.getElementById("bookingModalLabel").innerText = "Add Booking";
-        document.getElementById("bookingForm").reset();
-        document.getElementById("bookingId").value = "";
-        new bootstrap.Modal(document.getElementById("bookingModal")).show();
-    });
-
 }
 
 // Function to load vehicles into the dropdown

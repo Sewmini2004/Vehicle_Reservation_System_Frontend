@@ -6,7 +6,7 @@ export function PaymentController() {
     loadPayments();
 
     // Wait for the DOM to be fully loaded
-    document.addEventListener('DOMContentLoaded', function () {
+
         // Open modal for adding a new payment
         document.getElementById("addPaymentBtn").addEventListener("click", () => {
             console.log("Opening payment modal...");
@@ -95,7 +95,7 @@ export function PaymentController() {
              //   bookingId: document.getElementById("bookingId") ? document.getElementById("bookingId").value : "",
                 customerId: customer,
                 driverId: driver,
-                vehicleId: vehicle,
+                vehicleId: Number(vehicle),
                 pickupLocation: pickupLocation,
                 dropLocation: dropLocation,
                 carType: carType,
@@ -136,13 +136,15 @@ export function PaymentController() {
                 alert("An error occurred while processing payment.");
             }
         });
-    });
+
 }
 
 // Fetch payments from the backend and display them in the table
 async function loadPayments() {
     try {
         const response = await fetch("http://localhost:8091/Vehicle_Reservation_System_Backend_war/billing");
+        console.log("Load Payment");
+        console.log(response);
         const payments = await response.json();
 
         const paymentTableBody = document.getElementById("paymentTableBody");
