@@ -9,7 +9,7 @@ export function LoginForm() {
             ${InputField("password", "password", "Enter your password", "Password", "fas fa-lock")}
 
             <div class="text-end">
-                <a href="/forgot-password" class="text-decoration-none" data-link>Forgot Password?</a>
+
             </div>
             <button type="submit" class="btn btn-success w-100 mt-3">Login</button>
 
