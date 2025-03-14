@@ -6,6 +6,7 @@ import { VehicleController } from "./controllers/VehicleController.js";
 import {BookingController} from "./controllers/BookingController";
 import {PaymentController} from "./controllers/PaymentController";
 import {RegisterController} from "./controllers/RegisterController";
+import {DashboardController} from "./controllers/DashboardController.js";
 
 const routes = {
     "/": LoginController,
@@ -15,7 +16,8 @@ const routes = {
     "/vehicle": VehicleController,
     "/booking": BookingController,
     "/payment": PaymentController,
-    "/register": RegisterController
+    "/register": RegisterController,
+    "/dashboard":DashboardController
 };
 
 // Function to handle navigation
