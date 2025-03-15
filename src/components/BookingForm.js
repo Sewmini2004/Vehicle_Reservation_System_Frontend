@@ -54,7 +54,12 @@ export function BookingForm() {
                <label>Booking Date</label>
                <input type="date" class="form-control" id="bookingDate" name="bookingDate" value="" required>
                 </div>
-                <div class="col-md-6 mb-3">
+                 <div class="col-md-6 mb-3" >
+                   <label>Distance (km)</label>
+                  <input type="text"  class="form-control" id="distance" >
+               </div>
+                
+                <div class="col-md-6 mb-3" hidden="hidden">
                    <label>Total Bill</label>
                   <input type="number" step="0.01" class="form-control" id="totalBill" readonly>
            </div>

@@ -23,6 +23,7 @@ export function BookingController() {
                 bookingDate: document.getElementById("bookingDate").value,
                 carType: document.getElementById("carTypeDropdown").value,
                 totalBill: document.getElementById("totalBill").value,
+                distance: document.getElementById("distance").value
             };
 
             console.log("Collected Booking Data:", bookingData);
@@ -147,27 +148,14 @@ window.loadBookings = async function loadBookings() {
         for (let i = 0; i < bookings.length; i++) {
             const booking = bookings[i];
             if (addedBookingIds.has(booking.bookingId)) {
-                continue; // Skip the current iteration if the bookingId exists
+                continue;
             }
 
-            // Fetch the customer, driver, and vehicle details
-            // const customerResponse = await fetch(`http://localhost:8091/Vehicle_Reservation_System_Backend_war/customer?customerId=${booking.customerId}`);
-            // const driverResponse = await fetch(`http://localhost:8091/Vehicle_Reservation_System_Backend_war/driver?driverId=${booking.driverId}`);
-            // const vehicleResponse = await fetch(`http://localhost:8091/Vehicle_Reservation_System_Backend_war/vehicle?vehicleId=${booking.vehicleId}`);
-            // //
-            // const customer = await customerResponse.json();
-            // const driver = await driverResponse.json();
-            // const vehicle = await vehicleResponse.json();
-
-
-            // Create the row for the table
             const row = document.createElement("tr");
 
             // Format the booking date (helper function)
             const formattedDate = formatDateToInput(booking.bookingDate);
-            // <td>${customer.name}</td>
-            // <td>${vehicle.registrationNumber} - ${vehicle.model}</td>
-            //                  <td>${driver.name}</td>
+
             row.innerHTML = `
                  
                  
@@ -208,9 +196,9 @@ window.loadBookings = async function loadBookings() {
 function formatDateToInput(dateString) {
     const date = new Date(dateString);
     const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // Add leading zero if necessary
-    const day = String(date.getDate()).padStart(2, '0'); // Add leading zero if necessary
-    return `${year}-${month}-${day}`; // Return in yyyy-mm-dd format
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
 }
 
 // Edit booking

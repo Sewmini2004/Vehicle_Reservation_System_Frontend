@@ -10,10 +10,14 @@ export default function BookingView() {
                             <h4>Booking Management Form</h4>
                         </div>
                         <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+                        
                             <div class="card-body">
-                             <div class="mb-8">
+                              <div class="mb-8">
                                 <input type="text" id="searchBooking" class="form-control" placeholder="Search Bookings">
                             </div>
+                             <div style=" width: 100%" class="form-row">
+                                <div class="col-md" id="table_row">
+                                    <div><br>
                                 <table id="booking_table" class="table table-bordered table-hover display table-responsive-md">
                                     <thead>
                                         <tr>
@@ -38,6 +42,9 @@ export default function BookingView() {
                                         <!-- Data will be dynamically loaded -->
                                     </tbody>
                                 </table>
+                                </div>
+                                </div>
+                                </div>
                             </div>
                         </div>
                     </div>
