@@ -11,6 +11,9 @@ export default function CustomerView() {
 
                     <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
                         <div class="card-body">
+                         <div class="mb-8">
+                                <input type="text" id="searchCustomer" class="form-control" placeholder="Search Customers">
+                            </div>
                             <div style=" width: 100%" class="form-row">
                                 <div class="col-md" id="table_row">
                                     <div><br>
