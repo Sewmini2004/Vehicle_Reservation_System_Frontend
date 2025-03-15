@@ -1,21 +1,19 @@
 import BookingView from "../views/BookingView";
-import { initMap } from "./MapController";
+import {initMap} from "./MapController";
 
 export function BookingController() {
     const appDiv = document.getElementById("app");
     appDiv.innerHTML = BookingView(); // Load booking view
 
     initMap(); // Initialize map for pickup and drop locations
-    loadVehicles(); // Load vehicle dropdown data when page loads
-    loadCustomers(); // Load customer dropdown
-    loadDrivers();   // Load driver dropdown
+    loadVehicles();
+    loadCustomers();
+    loadDrivers();
     loadBookings();
 
-    // Use event delegation to handle dynamically created buttons
+    // Handle payment redirection on booking completion
     document.addEventListener("click", function (event) {
         if (event.target && event.target.id === "go-payment") {
-
-            // Collect booking data
             const bookingData = {
                 customer: document.getElementById("customerDropdown").value,
                 vehicle: document.getElementById("vehicleDropdown").value,
@@ -31,7 +29,6 @@ export function BookingController() {
 
             // Convert booking data to query string
             const queryString = new URLSearchParams(bookingData).toString();
-
             window.location.href = `/payment?${queryString}`;
         }
     });
@@ -44,6 +41,7 @@ export function BookingController() {
         new bootstrap.Modal(document.getElementById("bookingModal")).show();
     });
 
+    // Dynamic carType dropdown change on vehicle selection
     setTimeout(() => {
         const vehicleDropdown = document.getElementById("vehicleDropdown");
         const carTypeDropdown = document.getElementById("carTypeDropdown");
@@ -51,7 +49,6 @@ export function BookingController() {
         if (vehicleDropdown && carTypeDropdown) {
             vehicleDropdown.addEventListener("change", function () {
                 const selectedVehicle = this.options[this.selectedIndex];
-
                 if (selectedVehicle.value) {
                     carTypeDropdown.innerHTML = `<option value="${selectedVehicle.dataset.carType}">${selectedVehicle.dataset.carType}</option>`;
                 } else {
@@ -61,24 +58,24 @@ export function BookingController() {
         } else {
             console.error("Vehicle or Car Type dropdown not found in the DOM.");
         }
-    }, 100); // Delay to ensure DOM is rendered
+    }, 100);
 }
 
 // Function to load vehicles into the dropdown
 async function loadVehicles() {
     try {
-        const response = await fetch("http://localhost:8091/Vehicle_Reservation_System_Backend_war/vehicle"); // Update endpoint if needed
+        const response = await fetch("http://localhost:8091/Vehicle_Reservation_System_Backend_war/vehicle");
         if (!response.ok) throw new Error("Failed to fetch vehicles");
 
         const vehicles = await response.json();
         const vehicleDropdown = document.getElementById("vehicleDropdown");
-        vehicleDropdown.innerHTML = '<option value="">Select a Vehicle</option>'; // Default option
+        vehicleDropdown.innerHTML = '<option value="">Select a Vehicle</option>';
 
         vehicles.forEach(vehicle => {
             const option = document.createElement("option");
-            option.value = vehicle.vehicleId; // Ensure this matches API response
-            option.textContent = `${vehicle.registrationNumber} - ${vehicle.model}`; // Customize display
-            option.dataset.carType = vehicle.carType; // Store car type in data attribute
+            option.value = vehicle.vehicleId;
+            option.textContent = `${vehicle.registrationNumber} - ${vehicle.model}`;
+            option.dataset.carType = vehicle.carType;
             vehicleDropdown.appendChild(option);
         });
 
@@ -90,17 +87,17 @@ async function loadVehicles() {
 // Function to load customers into the dropdown
 async function loadCustomers() {
     try {
-        const response = await fetch("http://localhost:8091/Vehicle_Reservation_System_Backend_war/customer"); // Update the API URL if needed
+        const response = await fetch("http://localhost:8091/Vehicle_Reservation_System_Backend_war/customer");
         if (!response.ok) throw new Error("Failed to fetch customers");
 
         const customers = await response.json();
         const customerDropdown = document.getElementById("customerDropdown");
-        customerDropdown.innerHTML = '<option value="">Select a Customer</option>'; // Default option
+        customerDropdown.innerHTML = '<option value="">Select a Customer</option>';
 
         customers.forEach(customer => {
             const option = document.createElement("option");
-            option.value = customer.customerId; // Ensure this matches your API response
-            option.textContent = `${customer.name} `; // Customize the display
+            option.value = customer.customerId;
+            option.textContent = `${customer.name}`;
             customerDropdown.appendChild(option);
         });
 
@@ -112,17 +109,17 @@ async function loadCustomers() {
 // Function to load drivers into the dropdown
 async function loadDrivers() {
     try {
-        const response = await fetch("http://localhost:8091/Vehicle_Reservation_System_Backend_war/driver"); // Update API URL if needed
+        const response = await fetch("http://localhost:8091/Vehicle_Reservation_System_Backend_war/driver");
         if (!response.ok) throw new Error("Failed to fetch drivers");
 
         const drivers = await response.json();
         const driverDropdown = document.getElementById("driverDropdown");
-        driverDropdown.innerHTML = '<option value="">Select a Driver</option>'; // Default option
+        driverDropdown.innerHTML = '<option value="">Select a Driver</option>';
 
         drivers.forEach(driver => {
             const option = document.createElement("option");
-            option.value = driver.driverId; // Ensure this matches your API response
-            option.textContent = `${driver.name} - ${driver.status}`; // Customize display
+            option.value = driver.driverId;
+            option.textContent = `${driver.name} - ${driver.status}`;
             driverDropdown.appendChild(option);
         });
 
@@ -131,73 +128,90 @@ async function loadDrivers() {
     }
 }
 
-window.onload = function () {
-    document.getElementById("vehicleDropdown").addEventListener("change", function () {
-        const selectedVehicle = this.options[this.selectedIndex]; // Get selected option
-        const carTypeDropdown = document.getElementById("carTypeDropdown");
 
-        if (selectedVehicle.value) {
-            carTypeDropdown.innerHTML = `<option value="${selectedVehicle.dataset.carType}">${selectedVehicle.dataset.carType}</option>`;
-        } else {
-            carTypeDropdown.innerHTML = `<option value="">Select a Car Type</option>`; // Reset if no vehicle is selected
-        }
-    });
-};
-
-
-
-// Load bookings dynamically
+// Function to load bookings dynamically
 window.loadBookings = async function loadBookings() {
     try {
         const response = await fetch("http://localhost:8091/Vehicle_Reservation_System_Backend_war/booking");
         if (!response.ok) throw new Error("Failed to fetch bookings");
-        const bookings = await response.json();
 
+        const bookings = await response.json();
         const tableBody = document.getElementById("bookingTableBody");
+
         tableBody.innerHTML = "";
 
-        for (const booking of bookings) {
-            // Fetch the customer, driver, and vehicle details using the IDs
-            const customerResponse = await fetch(`http://localhost:8091/Vehicle_Reservation_System_Backend_war/customer?customerId=${booking.customerId}`);
-            const driverResponse = await fetch(`http://localhost:8091/Vehicle_Reservation_System_Backend_war/driver?driverId=${booking.driverId}`);
-            const vehicleResponse = await fetch(`http://localhost:8091/Vehicle_Reservation_System_Backend_war/vehicle?vehicleId=${booking.vehicleId}`);
+        // Track added booking IDs to prevent duplicate rows
+        const addedBookingIds = new Set();
 
-            const customer = await customerResponse.json();
-            const driver = await driverResponse.json();
-            const vehicle = await vehicleResponse.json();
+        console.log("Booking length " + bookings.length);
+        for (let i = 0; i < bookings.length; i++) {
+            const booking = bookings[i];
+            if (addedBookingIds.has(booking.bookingId)) {
+                continue; // Skip the current iteration if the bookingId exists
+            }
 
-            let editBtn = '';
-            let deleteBtn = '';
+            // Fetch the customer, driver, and vehicle details
+            // const customerResponse = await fetch(`http://localhost:8091/Vehicle_Reservation_System_Backend_war/customer?customerId=${booking.customerId}`);
+            // const driverResponse = await fetch(`http://localhost:8091/Vehicle_Reservation_System_Backend_war/driver?driverId=${booking.driverId}`);
+            // const vehicleResponse = await fetch(`http://localhost:8091/Vehicle_Reservation_System_Backend_war/vehicle?vehicleId=${booking.vehicleId}`);
+            // //
+            // const customer = await customerResponse.json();
+            // const driver = await driverResponse.json();
+            // const vehicle = await vehicleResponse.json();
 
-            editBtn = ` <a class="btn btn-warning btn-sm " title="Edit" onclick="editBooking(${booking.bookingId})"><i class="fa fa-edit"></i></a>`;
-            deleteBtn = ` <a class="btn btn-danger btn-sm " title="Delete" onclick="deleteBooking(${booking.bookingId})"><i class="fa fa-trash"></i></a>`;
 
+            // Create the row for the table
             const row = document.createElement("tr");
+
+            // Format the booking date (helper function)
+            const formattedDate = formatDateToInput(booking.bookingDate);
+            // <td>${customer.name}</td>
+            // <td>${vehicle.registrationNumber} - ${vehicle.model}</td>
+            //                  <td>${driver.name}</td>
             row.innerHTML = `
-                <td>${customer.name}</td> <!-- Display customer name -->
-                <td>${driver.name}</td> <!-- Display driver name -->
-                <td>${vehicle.registrationNumber} - ${vehicle.model}</td> <!-- Display vehicle registration number and model -->
+                 
+                 
+                <td>${booking.customerName}</td>
+                <td>${booking.vehicleRegistrationNumber} - ${booking.vehicleModel}</td>
+                <td>${booking.driverName}</td>
                 <td>${booking.pickupLocation}</td>
                 <td>${booking.dropLocation}</td>
-                <td>${booking.bookingDate}</td>
+                <td>${formattedDate}</td>
                 <td>${booking.carType}</td>
                 <td>${booking.totalBill}</td>
                 <td class="table-border-right">
                     <center>
-                        ${editBtn}
-                        ${deleteBtn}
+                        <a class="btn btn-warning btn-sm" title="Edit" onclick="editBooking(${booking.bookingId})">
+                            <i class="fa fa-edit"></i>
+                        </a>
+                        <a class="btn btn-danger btn-sm" title="Delete" onclick="deleteBooking(${booking.bookingId})">
+                            <i class="fa fa-trash"></i>
+                        </a>
                     </center>
                 </td>
             `;
+
+            console.log("Iterated");
+            // Append the row to the table body
             tableBody.appendChild(row);
+            // Add booking ID to the set to track added bookings
+            addedBookingIds.add(booking.bookingId);
+
         }
     } catch (error) {
+        console.error("Error loading bookings:", error);
         alert("Error loading bookings.");
     }
 };
 
-
-
+// Helper function to format the date to yyyy-mm-dd for input type="date"
+function formatDateToInput(dateString) {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Add leading zero if necessary
+    const day = String(date.getDate()).padStart(2, '0'); // Add leading zero if necessary
+    return `${year}-${month}-${day}`; // Return in yyyy-mm-dd format
+}
 
 // Edit booking
 window.editBooking = async function editBooking(id) {
@@ -223,21 +237,11 @@ window.editBooking = async function editBooking(id) {
     }
 };
 
-// Helper function to format the date to yyyy-mm-dd for input type="date"
-function formatDateToInput(dateString) {
-    const date = new Date(dateString);
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-
-    return `${year}-${month}-${day}`;
-}
-
 // Delete booking
 window.deleteBooking = async function deleteBooking(id) {
     if (confirm("Are you sure you want to delete this booking?")) {
         try {
-            const response = await fetch(`http://localhost:8091/Vehicle_Reservation_System_Backend_war/booking?bookingId=${id}`, { method: "DELETE" });
+            const response = await fetch(`http://localhost:8091/Vehicle_Reservation_System_Backend_war/booking?bookingId=${id}`, {method: "DELETE"});
             if (response.ok) {
                 alert("Booking deleted successfully!");
                 loadBookings();

@@ -11,6 +11,9 @@ export default function BookingView() {
                         </div>
                         <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
                             <div class="card-body">
+                             <div class="mb-8">
+                                <input type="text" id="searchBooking" class="form-control" placeholder="Search Bookings">
+                            </div>
                                 <table id="booking_table" class="table table-bordered table-hover display table-responsive-md">
                                     <thead>
                                         <tr>
