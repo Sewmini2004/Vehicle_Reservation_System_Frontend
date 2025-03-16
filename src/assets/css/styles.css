@@ -135,6 +135,19 @@ body, html {
     min-height: 100vh; /* Ensure main content takes up full screen height */
 }
 
+.card {
+    border-radius: 20px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+.card-title {
+    font-size: 24px;
+    font-weight: bold;
+}
+.card-text {
+    font-size: 30px;
+    font-weight: bold;
+}
+
 
 
 

@@ -9,8 +9,13 @@ export default function PaymentView() {
                         <div class="card-header" id="headingOne" style="font-size: 14px; font-weight: 525;">
                             <h4>Payment Management</h4>
                         </div>
+                         <div class="mb-8">
+                                    <input type="text" id="searchPayment" class="form-control" placeholder="Search Payment">
+                                </div>
+                         <div class="card-body"> 
+                        
                         <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
-                            <div class="card-body">
+                             <div style="height: 500px; overflow-y: auto;">
                                 <table id="payment_table" class="table table-bordered table-hover display table-responsive-md">
                                     <thead>
                                         <tr>
@@ -35,6 +40,7 @@ export default function PaymentView() {
                                         <!-- Data will be dynamically loaded -->
                                     </tbody>
                                 </table>
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -24,6 +24,35 @@ document.addEventListener("DOMContentLoaded", () => {
     handleSidebarVisibility();
 });
 
+
+// Show profile section when profile image is clicked
+document.getElementById("profileImg").addEventListener("click", () => {
+    const profileSection = document.querySelector(".profile-section");
+    // Toggle the visibility of the profile section
+    profileSection.style.display = profileSection.style.display === "block" ? "none" : "block";
+});
+
+
+// Logout functionality
+document.getElementById("logoutBtn").addEventListener("click", () => {
+    // Clear session storage or cookies related to the session
+    sessionStorage.removeItem("adminSession");  // or clear specific session data
+
+    // Redirect to the login page
+    window.location.href = "/login";  // Adjust to your login page URL
+});
+
+// Load Admin name and role dynamically from sessionStorage (if available)
+document.addEventListener("DOMContentLoaded", () => {
+    const adminName = sessionStorage.getItem("adminName");
+    const adminRole = sessionStorage.getItem("adminRole");
+
+    if (adminName && adminRole) {
+        document.getElementById("adminName").textContent = adminName;
+        document.getElementById("adminRole").textContent = adminRole;
+    }
+});
+
 // Listen for back/forward navigation and update sidebar
 window.addEventListener("popstate", () => {
     renderRoute(location.pathname);

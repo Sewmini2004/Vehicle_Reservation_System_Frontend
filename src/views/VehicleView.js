@@ -12,9 +12,13 @@ export default function VehicleView() {
 
                     <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
                         <div class="card-body">
+                         <div class="mb-8">
+                                <input type="text" id="searchVehicle" class="form-control" placeholder="Search Vehicles">
+                            </div>
                             <div style="width: 100%" class="form-row">
                                 <div class="col-md" id="table_row">
                                     <div><br>
+                                     <div style="height: 400px; overflow-y: auto;">
                                         <table id="vehicle_table" class="table table-bordered table-hover display table-responsive-md">
                                             <thead class="">
                                                 <tr>
@@ -38,6 +42,7 @@ export default function VehicleView() {
                                                 <!-- Data will be dynamically loaded -->
                                             </tbody>
                                         </table>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

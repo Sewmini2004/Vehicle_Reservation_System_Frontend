@@ -1,4 +1,4 @@
-import DriverView from "../views/DriverView";
+import DriverView from "../views/DriverView.js";
 
 export function DriverController() {
     const appDiv = document.getElementById("app");
@@ -14,11 +14,23 @@ export function DriverController() {
         new bootstrap.Modal(document.getElementById("driverModal")).show();
     });
 
+    // Enable or disable save button based on form validation
+    document.getElementById("driverForm").addEventListener("input", () => {
+        const saveBtn = document.getElementById("saveDriverBtn");
+        const form = document.getElementById("driverForm");
+        // Check if the form is valid
+        if (form.checkValidity()) {
+            saveBtn.disabled = false;
+        } else {
+            saveBtn.disabled = true;
+        }
+    });
+
     // Save or Update Driver
     document.getElementById("saveDriverBtn").addEventListener("click", async () => {
         const driverId = document.getElementById("driverId").value;
         const driver = {
-            driverId:driverId ? parseInt(driverId) : 0,
+            driverId: driverId ? parseInt(driverId) : 0,
             name: document.getElementById("name").value,
             licenseNumber: document.getElementById("licenseNumber").value,
             status: document.getElementById("status").value,
@@ -111,8 +123,6 @@ window.loadDrivers = async function loadDrivers() {
     } catch (error) {
         console.error("Error loading drivers:", error);
         alert("An error occurred while loading driver data.");
-
-
     }
 }
 
@@ -171,5 +181,3 @@ window.deleteDriver = async function deleteDriver(id) {
         }
     }
 }
-
-

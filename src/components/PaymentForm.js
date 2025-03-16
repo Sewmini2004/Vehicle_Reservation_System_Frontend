@@ -1,26 +1,26 @@
 export function PaymentForm() {
     return `
         <form id="paymentForm" class="container">
-         <input type="hidden" id="paymentId">
+            <input type="hidden" id="paymentId">
             <div class="row">
                 <div class="col-md-4">
                     <div class="mb-3">
-                        <label class="form-label">Total Amount</label>
-                        <input type="number" step="0.01" class="form-control" id="totalAmount" >
+                        <label class="form-label">Total Amount <span class="text-danger">*</span></label>
+                        <input type="number" step="0.01" class="form-control" id="totalAmount" required>
                     </div>
                 </div>
 
                 <div class="col-md-4">
                     <div class="mb-3">
-                        <label class="form-label">Discount Amount</label>
-                        <input type="number" step="0.01" class="form-control" id="discountAmount">
+                        <label class="form-label">Discount Amount <span class="text-danger">*</span></label>
+                        <input type="number" step="0.01" class="form-control" id="discountAmount" required>
                     </div>
                 </div>
 
                 <div class="col-md-4">
                     <div class="mb-3">
-                        <label class="form-label">Tax Amount</label>
-                        <input type="number" step="0.01" class="form-control" id="taxAmount">
+                        <label class="form-label">Tax Amount <span class="text-danger">*</span></label>
+                        <input type="number" step="0.01" class="form-control" id="taxAmount" required>
                     </div>
                 </div>
             </div>
@@ -28,31 +28,25 @@ export function PaymentForm() {
             <div class="row">
                 <div class="col-md-4">
                     <div class="mb-3">
-                        <label class="form-label">Final Amount</label>
-                        <input type="number" step="0.01" class="form-control" id="finalAmount" >
+                        <label class="form-label">Final Amount <span class="text-danger">*</span></label>
+                        <input type="number" step="0.01" class="form-control" id="finalAmount" disabled>
                     </div>
                 </div>
 
                 <div class="col-md-4">
                     <div class="mb-3">
-                        <label class="form-label">Payment Method</label>
-                        <select class="form-control" id="paymentMethod">
-                            <option value="">-- Select --</option>
-                            <option value="Cash">Cash</option>
-                            <option value="Card">Card</option>
-                            <option value="Online">Online</option>
+                        <label class="form-label">Payment Method <span class="text-danger">*</span></label>
+                        <select class="form-control" id="paymentMethod" required>
+                            <option value="">Select a Payment Method</option>
                         </select>
                     </div>
                 </div>
 
                 <div class="col-md-4">
                     <div class="mb-3">
-                        <label class="form-label">Payment Status</label>
-                        <select class="form-control" id="paymentStatus">
-                            <option value="">-- Select --</option>
-                            <option value="Pending">Pending</option>
-                            <option value="Completed">Completed</option>
-                            <option value="Failed">Failed</option>
+                        <label class="form-label">Payment Status <span class="text-danger">*</span></label>
+                        <select class="form-control" id="paymentStatus" required>
+                            <option value="">Select a Status</option>
                         </select>
                     </div>
                 </div>

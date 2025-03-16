@@ -11,9 +11,13 @@ export default function CustomerView() {
 
                     <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
                         <div class="card-body">
+                         <div class="mb-8">
+                                <input type="text" id="searchCustomer" class="form-control" placeholder="Search Customers">
+                            </div>
                             <div style=" width: 100%" class="form-row">
                                 <div class="col-md" id="table_row">
                                     <div><br>
+                                       <div style="height: 400px; overflow-y: auto;">
                                         <table id="customer_table" class="table table-bordered table-hover display table-responsive-md">
                                             <thead class="">
                                                 <tr>
@@ -36,6 +40,7 @@ export default function CustomerView() {
                                                 <!-- Data will be dynamically loaded -->
                                             </tbody>
                                         </table>
+                                  </div>
                                     </div>
                                 </div>
                             </div>
