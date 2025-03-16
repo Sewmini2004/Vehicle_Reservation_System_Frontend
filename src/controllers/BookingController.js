@@ -14,6 +14,13 @@ export function BookingController() {
     // Handle payment redirection on booking completion
     document.addEventListener("click", function (event) {
         if (event.target && event.target.id === "go-payment") {
+            // Validate if all required fields are filled
+            const isFormValid = document.getElementById("bookingForm").checkValidity();
+            if (!isFormValid) {
+                alert("Please fill in all required fields.");
+                return; // Prevent payment redirection if form is invalid
+            }
+
             const bookingData = {
                 customer: document.getElementById("customerDropdown").value,
                 vehicle: document.getElementById("vehicleDropdown").value,
@@ -35,6 +42,7 @@ export function BookingController() {
             window.location.href = `/payment?${queryString}`;
         }
     });
+
     function extractDistanceNumber(distanceStr) {
         // Use regular expression to extract numbers from the distance string
         const match = distanceStr.match(/(\d+(\.\d+)?)/); // Match the numeric part
@@ -47,6 +55,17 @@ export function BookingController() {
         document.getElementById("bookingForm").reset();
         document.getElementById("bookingId").value = "";
         new bootstrap.Modal(document.getElementById("bookingModal")).show();
+    });
+
+    // Enable or disable "Go to Payment" button based on form validity
+    document.getElementById("bookingForm").addEventListener("input", () => {
+        const goPaymentBtn = document.getElementById("go-payment");
+        const form = document.getElementById("bookingForm");
+        if (form.checkValidity()) {
+            goPaymentBtn.disabled = false;
+        } else {
+            goPaymentBtn.disabled = true;
+        }
     });
 
     // Dynamic carType dropdown change on vehicle selection
@@ -68,7 +87,6 @@ export function BookingController() {
         }
     }, 100);
 
-
     // Adding the search functionality to filter bookings
     let debounceTimer;
 
@@ -83,7 +101,6 @@ export function BookingController() {
             loadBookings(searchTerm);  // Call the loadBookings function with search term
         }, 500);
     });
-
 }
 
 // Function to load vehicles into the dropdown
@@ -190,12 +207,11 @@ window.loadBookings = async function loadBookings(searchTerm = '') {
                     <td>${booking.totalBill}</td>
                     <td class="table-border-right">
                         <center>
-                            <a class="btn btn-warning btn-sm" title="Edit" onclick="editBooking(${booking.bookingId})">
-                                <i class="fa fa-edit"></i>
-                            </a>
-                            <a class="btn btn-danger btn-sm" title="Delete" onclick="deleteBooking(${booking.bookingId})">
-                                <i class="fa fa-trash"></i>
-                            </a>
+                           
+                           <a class="btn btn-danger btn-sm" title="Cancel" >
+                            <i class="fa fa-times"></i> Cancel
+                        </a>
+
                         </center>
                     </td>
                 `;

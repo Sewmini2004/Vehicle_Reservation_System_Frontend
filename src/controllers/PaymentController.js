@@ -174,9 +174,7 @@ async function loadPayments(searchTerm = '') {
                 <td>${payment.paymentStatus}</td>
                 <td>
                     <center>
-                        <button type="button" class="btn btn-warning" data-payment-id="${payment.billId}" id="editPaymentBtn">
-                            <i class="fa fa-edit"></i>
-                        </button>
+                    
                     </center>
                 </td>
             `;
