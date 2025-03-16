@@ -15,6 +15,7 @@ export default function DriverView() {
                             <div style="width: 100%" class="form-row">
                                 <div class="col-md" id="table_row">
                                     <div><br>
+                                     <div style="height: 400px; overflow-y: auto;">
                                         <table id="driver_table" class="table table-bordered table-hover display table-responsive-md">
                                             <thead class="">
                                                 <tr>
@@ -38,6 +39,7 @@ export default function DriverView() {
                                                 <!-- Data will be dynamically loaded -->
                                             </tbody>
                                         </table>
+                                    </div>
                                     </div>
                                 </div>
                             </div>

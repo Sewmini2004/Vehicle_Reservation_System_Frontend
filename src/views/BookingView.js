@@ -1,4 +1,4 @@
-import {BookingForm} from "../components/BookingForm";
+import { BookingForm } from "../components/BookingForm";
 
 export default function BookingView() {
     return `
@@ -10,47 +10,49 @@ export default function BookingView() {
                             <h4>Booking Management Form</h4>
                         </div>
                         <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
-                        
                             <div class="card-body">
-                              <div class="mb-8">
-                                <input type="text" id="searchBooking" class="form-control" placeholder="Search Bookings">
-                            </div>
-                             <div style=" width: 100%" class="form-row">
-                                <div class="col-md" id="table_row">
-                                    <div><br>
-                                <table id="booking_table" class="table table-bordered table-hover display table-responsive-md">
-                                    <thead>
-                                        <tr>
-                                            <th>Customer</th>
-                                            <th>Vehicle</th>
-                                            <th>Driver</th>
-                                            <th>Pickup Location</th>
-                                            <th>Drop Location</th>
-                                            <th>Booking Date</th>
-                                            <th>Car Type</th>
-                                            <th>Total Bill</th>
-                                            <th>
-                                                <center>
-                                                    <button type="button" class="btn btn-success" id="addBookingBtn">
-                                                        <i class="fas fa-plus"></i>
-                                                    </button>
-                                                </center>
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="bookingTableBody">
-                                        <!-- Data will be dynamically loaded -->
-                                    </tbody>
-                                </table>
+                                <div class="mb-8">
+                                    <input type="text" id="searchBooking" class="form-control" placeholder="Search Bookings">
                                 </div>
-                                </div>
+                                <div style=" width: 100%" class="form-row">
+                                    <div class="col-md" id="table_row">
+                                        <div><br>
+                                            <div style="height: 500px; overflow-y: auto;">
+                                                <table id="booking_table" class="table table-bordered table-hover display table-responsive-md">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Customer</th>
+                                                            <th>Vehicle</th>
+                                                            <th>Driver</th>
+                                                            <th>Pickup Location</th>
+                                                            <th>Drop Location</th>
+                                                            <th>Distance</th>
+                                                            <th>Booking Date</th>
+                                                            <th>Car Type</th>
+                                                            <th>Total Bill</th>
+                                                            <th>
+                                                                <center>
+                                                                    <button type="button" class="btn btn-success" id="addBookingBtn">
+                                                                        <i class="fas fa-plus"></i>
+                                                                    </button>
+                                                                </center>
+                                                            </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="bookingTableBody">
+                                                        <!-- Data will be dynamically loaded -->
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            
+
             <div class="modal fade" id="bookingModal" tabindex="-1" aria-labelledby="bookingModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
@@ -63,10 +65,7 @@ export default function BookingView() {
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                          
-                              <button  type="submit" class="btn btn-warning" id="go-payment"  >
-                              Go To Payment  
-                            </button>
+                            <button type="submit" class="btn btn-warning" id="go-payment">Go To Payment</button>
                         </div>
                     </div>
                 </div>

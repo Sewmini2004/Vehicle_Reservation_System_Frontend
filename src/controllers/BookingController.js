@@ -23,9 +23,11 @@ export function BookingController() {
                 bookingDate: document.getElementById("bookingDate").value,
                 carType: document.getElementById("carTypeDropdown").value,
                 totalBill: document.getElementById("totalBill").value,
-                distance: document.getElementById("distance").value
+                distance: extractDistanceNumber(document.getElementById("distance").value)
             };
 
+            console.log("distance ::::::::::::::::");
+            console.log(document.getElementById("distance").value);
             console.log("Collected Booking Data:", bookingData);
 
             // Convert booking data to query string
@@ -33,6 +35,11 @@ export function BookingController() {
             window.location.href = `/payment?${queryString}`;
         }
     });
+    function extractDistanceNumber(distanceStr) {
+        // Use regular expression to extract numbers from the distance string
+        const match = distanceStr.match(/(\d+(\.\d+)?)/); // Match the numeric part
+        return match ? match[0] : "0"; // If there's a match, return the number, else return "0"
+    }
 
     // Open modal for adding a new booking
     document.getElementById("addBookingBtn").addEventListener("click", () => {
@@ -60,6 +67,23 @@ export function BookingController() {
             console.error("Vehicle or Car Type dropdown not found in the DOM.");
         }
     }, 100);
+
+
+    // Adding the search functionality to filter bookings
+    let debounceTimer;
+
+    document.getElementById("searchBooking").addEventListener("input", async (event) => {
+        const searchTerm = event.target.value.trim();
+
+        // Clear the previous debounce timer
+        clearTimeout(debounceTimer);
+
+        // Set a new debounce timer for 500ms
+        debounceTimer = setTimeout(async () => {
+            loadBookings(searchTerm);  // Call the loadBookings function with search term
+        }, 500);
+    });
+
 }
 
 // Function to load vehicles into the dropdown
@@ -105,6 +129,7 @@ async function loadCustomers() {
     } catch (error) {
         console.error("Error loading customers:", error);
     }
+
 }
 
 // Function to load drivers into the dropdown
@@ -131,60 +156,52 @@ async function loadDrivers() {
 
 
 // Function to load bookings dynamically
-window.loadBookings = async function loadBookings() {
+// Modify loadBookings to take an optional searchTerm
+window.loadBookings = async function loadBookings(searchTerm = '') {
     try {
-        const response = await fetch("http://localhost:8091/Vehicle_Reservation_System_Backend_war/booking");
+        // Fetch bookings from the backend with the search term
+        const response = await fetch(`http://localhost:8091/Vehicle_Reservation_System_Backend_war/booking?search=${searchTerm}`);
         if (!response.ok) throw new Error("Failed to fetch bookings");
 
         const bookings = await response.json();
         const tableBody = document.getElementById("bookingTableBody");
 
-        tableBody.innerHTML = "";
+        tableBody.innerHTML = ""; // Clear the previous table data
 
-        // Track added booking IDs to prevent duplicate rows
-        const addedBookingIds = new Set();
+        if (bookings.length === 0) {
+            const noResultsRow = document.createElement("tr");
+            noResultsRow.innerHTML = `<td colspan="10" style="text-align: center;">No bookings found</td>`;
+            tableBody.appendChild(noResultsRow);
+        } else {
+            bookings.forEach(booking => {
+                const row = document.createElement("tr");
 
-        console.log("Booking length " + bookings.length);
-        for (let i = 0; i < bookings.length; i++) {
-            const booking = bookings[i];
-            if (addedBookingIds.has(booking.bookingId)) {
-                continue;
-            }
+                const formattedDate = formatDateToInput(booking.bookingDate);
 
-            const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${booking.customerName}</td>
+                    <td>${booking.vehicleRegistrationNumber} - ${booking.vehicleModel}</td>
+                    <td>${booking.driverName}</td>
+                    <td>${booking.pickupLocation}</td>
+                    <td>${booking.dropLocation}</td>
+                    <td>${booking.distance}</td>
+                    <td>${formattedDate}</td>
+                    <td>${booking.carType}</td>
+                    <td>${booking.totalBill}</td>
+                    <td class="table-border-right">
+                        <center>
+                            <a class="btn btn-warning btn-sm" title="Edit" onclick="editBooking(${booking.bookingId})">
+                                <i class="fa fa-edit"></i>
+                            </a>
+                            <a class="btn btn-danger btn-sm" title="Delete" onclick="deleteBooking(${booking.bookingId})">
+                                <i class="fa fa-trash"></i>
+                            </a>
+                        </center>
+                    </td>
+                `;
 
-            // Format the booking date (helper function)
-            const formattedDate = formatDateToInput(booking.bookingDate);
-
-            row.innerHTML = `
-                 
-                 
-                <td>${booking.customerName}</td>
-                <td>${booking.vehicleRegistrationNumber} - ${booking.vehicleModel}</td>
-                <td>${booking.driverName}</td>
-                <td>${booking.pickupLocation}</td>
-                <td>${booking.dropLocation}</td>
-                <td>${formattedDate}</td>
-                <td>${booking.carType}</td>
-                <td>${booking.totalBill}</td>
-                <td class="table-border-right">
-                    <center>
-                        <a class="btn btn-warning btn-sm" title="Edit" onclick="editBooking(${booking.bookingId})">
-                            <i class="fa fa-edit"></i>
-                        </a>
-                        <a class="btn btn-danger btn-sm" title="Delete" onclick="deleteBooking(${booking.bookingId})">
-                            <i class="fa fa-trash"></i>
-                        </a>
-                    </center>
-                </td>
-            `;
-
-            console.log("Iterated");
-            // Append the row to the table body
-            tableBody.appendChild(row);
-            // Add booking ID to the set to track added bookings
-            addedBookingIds.add(booking.bookingId);
-
+                tableBody.appendChild(row);
+            });
         }
     } catch (error) {
         console.error("Error loading bookings:", error);
@@ -214,6 +231,7 @@ window.editBooking = async function editBooking(id) {
         document.getElementById("vehicleDropdown").value = booking.vehicleId;
         document.getElementById("pickupLocation").value = booking.pickupLocation;
         document.getElementById("dropLocation").value = booking.dropLocation;
+        document.getElementById("distance").value = booking.distance;
 
         const formattedDateForInput = formatDateToInput(booking.bookingDate);
         document.getElementById("bookingDate").value = formattedDateForInput;

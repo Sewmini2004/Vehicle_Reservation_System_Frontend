@@ -2,28 +2,35 @@ import PaymentView from "../views/PaymentView";
 
 export function PaymentController() {
     const appDiv = document.getElementById("app");
-    appDiv.innerHTML = PaymentView(); // Render the payment view
+    appDiv.innerHTML = PaymentView();
     loadPayments();
-
-    // Wait for the DOM to be fully loaded
-
+    loadStaticDropdowns();
         // Open modal for adding a new payment
         document.getElementById("addPaymentBtn").addEventListener("click", () => {
             console.log("Opening payment modal...");
 
-            // Reset the form and set up modal label
             document.getElementById("paymentModalLabel").innerText = "Add Payment";
-            document.getElementById("paymentForm").reset(); // Reset the form
+            document.getElementById("paymentForm").reset();
 
-            // Clear any previous values
             document.getElementById("paymentId").value = "";
-
-            // Trigger Bootstrap modal
             const paymentModal = new bootstrap.Modal(document.getElementById("paymentModal"));
-            paymentModal.show();  // This shows the modal
+            paymentModal.show();
         });
 
-        // Retrieve booking details from session storage
+    // Search payments by payment method or status or any other field
+    let debounceTimer;
+
+    document.getElementById("searchPayment").addEventListener("input", async (event) => {
+        const searchTerm = event.target.value.trim();
+        clearTimeout(debounceTimer);
+
+        debounceTimer = setTimeout(async () => {
+            loadPayments(searchTerm);  // Call the backend with search term
+        }, 500);
+    });
+
+
+    // Retrieve booking details from session storage
         const booking = JSON.parse(sessionStorage.getItem("bookingDetails"));
         if (booking) {
             // Check if the elements exist before assigning values
@@ -51,6 +58,10 @@ export function PaymentController() {
             if (document.getElementById("totalAmount")) {
                 document.getElementById("totalAmount").value = booking.totalBill;
             }
+             if (document.getElementById("distance")) {
+                document.getElementById("distance").value = booking.distance;
+            }
+
         }
 
         // Function to calculate the final amount dynamically
@@ -80,6 +91,7 @@ export function PaymentController() {
             const dropLocation = queryParams.get("dropLocation");
             const bookingDate = queryParams.get("bookingDate");
             const totalBill = queryParams.get("totalBill");
+            const distance = queryParams.get("distance");
 
             console.log("Customer:", customer);
             console.log("Vehicle:", vehicle);
@@ -89,6 +101,7 @@ export function PaymentController() {
             console.log("Drop Location:", dropLocation);
             console.log("Booking Date:", bookingDate);
             console.log("Total Bill:", totalBill);
+            console.log("distance:", distance);
 
             // Collect payment data from the form
             const paymentData = {
@@ -100,24 +113,23 @@ export function PaymentController() {
                 dropLocation: dropLocation,
                 carType: carType,
                 bookingDate: bookingDate,
+                distance: distance,
                 totalBill: document.getElementById("totalAmount").value,
                 discountAmount: document.getElementById("discountAmount").value,
                 taxAmount: document.getElementById("taxAmount").value,
                 finalAmount: document.getElementById("finalAmount").value,
                 paymentMethod: document.getElementById("paymentMethod").value,
                 paymentStatus: document.getElementById("paymentStatus").value,
+
+
             };
 
-            // // Check if bookingId exists before saving
-            // if (!paymentData.bookingId) {
-            //     alert("Booking ID is missing, cannot save payment.");
-            //     return;
-            // }
+            console.log(document.getElementById("paymentMethod").value);
+            console.log(document.getElementById("paymentStatus").value);
 
             console.log("paymentData")
             console.log(JSON.stringify(paymentData))
             try {
-                // Send payment data to backend
                 const response = await fetch("http://localhost:8091/Vehicle_Reservation_System_Backend_war/booking", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
@@ -126,7 +138,8 @@ export function PaymentController() {
 
                 if (response.ok) {
                     alert("Payment successful!");
-                    location.reload(); // Refresh page to update payment table
+                    window.location.href = "/payment";
+                    loadPayments();
                 } else {
                     const errorData = await response.json();
                     alert(`Payment failed: ${errorData.message || 'Unknown error'}`);
@@ -140,11 +153,9 @@ export function PaymentController() {
 }
 
 // Fetch payments from the backend and display them in the table
-async function loadPayments() {
+async function loadPayments(searchTerm = '') {
     try {
-        const response = await fetch("http://localhost:8091/Vehicle_Reservation_System_Backend_war/billing");
-        console.log("Load Payment");
-        console.log(response);
+        const response = await fetch(`http://localhost:8091/Vehicle_Reservation_System_Backend_war/billing?search=${searchTerm}`);
         const payments = await response.json();
 
         const paymentTableBody = document.getElementById("paymentTableBody");
@@ -178,13 +189,11 @@ async function loadPayments() {
                 const paymentId = event.target.getAttribute("data-payment-id");
 
                 // Retrieve payment details and open the modal for editing
-                fetch(`http://localhost:8091/Vehicle_Reservation_System_Backend_war/payments/${paymentId}`)
+                fetch(`http://localhost:8091/Vehicle_Reservation_System_Backend_war/billing/${paymentId}`)
                     .then(response => response.json())
                     .then(payment => {
-                        // Set the session storage or handle the data for editing
                         sessionStorage.setItem("paymentDetails", JSON.stringify(payment));
 
-                        // Populate the form in the modal with the existing payment data
                         document.getElementById("paymentId").value = payment.billId;
                         document.getElementById("totalAmount").value = payment.totalAmount;
                         document.getElementById("discountAmount").value = payment.discountAmount;
@@ -204,5 +213,29 @@ async function loadPayments() {
         console.error("Error fetching payments:", error);
         alert("An error occurred while loading payments.");
     }
+}
+
+function loadStaticDropdowns() {
+    const paymentMethod = document.getElementById("paymentMethod");
+    paymentMethod.innerHTML = '<option value="">Select a Payment Method</option>';
+
+    ["Cash","Card","Online"].forEach(item => {
+        const option1 = document.createElement("option");
+        option1.value = item;
+        option1.textContent = `${item}`;
+        // option.dataset.carType = item.carType;
+        paymentMethod.appendChild(option1);
+    });
+
+    const paymentStatus = document.getElementById("paymentStatus");
+    paymentStatus.innerHTML = '<option value="">Select a Status</option>';
+
+    ["Pending","Completed","Failed"].forEach(item => {
+        const option2 = document.createElement("option");
+        option2.value = item;
+        option2.textContent = `${item}`;
+        // option.dataset.carType = item.carType;
+        paymentStatus.appendChild(option2);
+    });
 }
 

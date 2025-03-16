@@ -37,10 +37,10 @@ export function PaymentForm() {
                     <div class="mb-3">
                         <label class="form-label">Payment Method</label>
                         <select class="form-control" id="paymentMethod">
-                            <option value="">-- Select --</option>
-                            <option value="Cash">Cash</option>
-                            <option value="Card">Card</option>
-                            <option value="Online">Online</option>
+                            <option value=""></option>
+<!--                            <option value="Cash">Cash</option>-->
+<!--                            <option value="Card">Card</option>-->
+<!--                            <option value="Online">Online</option>-->
                         </select>
                     </div>
                 </div>
@@ -49,10 +49,10 @@ export function PaymentForm() {
                     <div class="mb-3">
                         <label class="form-label">Payment Status</label>
                         <select class="form-control" id="paymentStatus">
-                            <option value="">-- Select --</option>
-                            <option value="Pending">Pending</option>
-                            <option value="Completed">Completed</option>
-                            <option value="Failed">Failed</option>
+                        <option value=""></option>
+<!--                            <option value="Pending">Pending</option>-->
+<!--                            <option value="Completed">Completed</option>-->
+<!--                            <option value="Failed">Failed</option>-->
                         </select>
                     </div>
                 </div>
