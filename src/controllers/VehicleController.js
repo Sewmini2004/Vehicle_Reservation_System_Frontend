@@ -16,6 +16,18 @@ export function VehicleController() {
         new bootstrap.Modal(document.getElementById("vehicleModal")).show();
     });
 
+    // Enable or disable the save button based on form validation
+    document.getElementById("vehicleForm").addEventListener("input", () => {
+        const saveBtn = document.getElementById("saveVehicleBtn");
+        const form = document.getElementById("vehicleForm");
+        // Check if the form is valid
+        if (form.checkValidity()) {
+            saveBtn.disabled = false;
+        } else {
+            saveBtn.disabled = true;
+        }
+    });
+
     // Save or Update Vehicle
     document.getElementById("saveVehicleBtn").addEventListener("click", async () => {
         const vehicleId = document.getElementById("vehicleId").value;

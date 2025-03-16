@@ -14,7 +14,19 @@ export function CustomerController() {
         new bootstrap.Modal(document.getElementById("customerModal")).show();
     });
 
-// Save or Update Customer
+    // Enable or disable save button based on form validation
+    document.getElementById("customerForm").addEventListener("input", () => {
+        const saveBtn = document.getElementById("saveCustomerBtn");
+        const form = document.getElementById("customerForm");
+        // Check if the form is valid
+        if (form.checkValidity()) {
+            saveBtn.disabled = false;
+        } else {
+            saveBtn.disabled = true;
+        }
+    });
+
+    // Save or Update Customer
     document.getElementById("saveCustomerBtn").addEventListener("click", async () => {
         const customerId = document.getElementById("customerId").value;
         const customer = {
@@ -69,21 +81,15 @@ export function CustomerController() {
         }
     });
 
-
-
-    // Search customer by name or email
-    let debounceTimer;  // To store the debounce timer
-
-// Search customer by name or email with debounce
+    // Search customer by name or email with debounce
+    let debounceTimer;
     document.getElementById("searchCustomer").addEventListener("input", async (event) => {
-        const searchTerm = event.target.value.trim();
         clearTimeout(debounceTimer);
 
         debounceTimer = setTimeout(async () => {
             loadCustomers(searchTerm);
         }, 500);
     });
-
 }
 
 // Load customers dynamically with optional search term
